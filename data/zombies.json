@@ -1,0 +1,37 @@
+[
+  {
+    "id": "basique",
+    "nom": "Zombie",
+    "emoji": "🧟",
+    "vie": 200,
+    "vitesse": 18,
+    "degatsParSeconde": 30
+  },
+  {
+    "id": "chauve-souris",
+    "nom": "Chauve-souris",
+    "emoji": "🦇",
+    "vie": 110,
+    "vitesse": 42,
+    "degatsParSeconde": 20,
+    "taille": 64
+  },
+  {
+    "id": "goule",
+    "nom": "Goule costaude",
+    "emoji": "🧌",
+    "vie": 600,
+    "vitesse": 14,
+    "degatsParSeconde": 45,
+    "taille": 86
+  },
+  {
+    "id": "dracula",
+    "nom": "Dracula (boss)",
+    "emoji": "🧛",
+    "vie": 1800,
+    "vitesse": 11,
+    "degatsParSeconde": 90,
+    "taille": 100
+  }
+]

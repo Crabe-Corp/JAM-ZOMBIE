@@ -1,0 +1,208 @@
+/* =============================================================
+   STYLE — rôle B (interface), couleurs à valider avec C
+   ============================================================= */
+:root {
+  --bg: #0d0a14;
+  --panel: #1c1426;
+  --panel-2: #2e2240;
+  --orange: #ff8c1a;
+  --green: #7bd66b;
+  --danger: #e0454a;
+  --text: #f3e9dc;
+  --muted: #a99bb8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: radial-gradient(ellipse at top, #2a1a3a 0%, var(--bg) 60%);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#app {
+  width: min(1032px, 100%);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── HUD ─────────────────────────────────────────────────── */
+#hud {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  background: var(--panel);
+  border: 2px solid var(--panel-2);
+  border-radius: 12px;
+}
+
+#resources {
+  min-width: 110px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+#resources.bump { animation: bump 0.25s; }
+
+#card-bar { display: flex; gap: 8px; flex: 1; overflow-x: auto; padding: 4px 2px; }
+
+.card {
+  position: relative;
+  width: 66px;
+  height: 82px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--panel-2);
+  border-radius: 10px;
+  background: linear-gradient(#3a2b4d, #221a30);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+.card:hover { transform: translateY(-2px); }
+.card-icon { font-size: 2rem; line-height: 1; }
+.card-icon img { width: 44px; height: 44px; object-fit: contain; }
+.card-cost { font-size: 0.78rem; font-weight: 700; color: var(--orange); }
+.card-cooldown {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0;
+  background: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+.card.selected { border-color: var(--orange); box-shadow: 0 0 14px var(--orange); transform: translateY(-3px); }
+.card.disabled { filter: grayscale(0.85) brightness(0.65); }
+.card.shake { animation: shake 0.3s; }
+.card.shovel { margin-left: auto; }
+.card.shovel .card-cost { color: var(--muted); }
+
+#wave { min-width: 150px; font-size: 0.85rem; color: var(--muted); }
+#wave-bar { height: 10px; margin-top: 4px; border-radius: 6px; overflow: hidden; background: rgba(0, 0, 0, 0.45); }
+#wave-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--green), var(--orange), var(--danger)); transition: width 0.3s; }
+
+.icon-btn {
+  width: 42px; height: 42px;
+  border: 2px solid var(--panel-2);
+  border-radius: 10px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ── Zone de jeu ─────────────────────────────────────────── */
+#stage {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--panel-2);
+  border-radius: 12px;
+  background: #000;
+}
+canvas { display: block; width: 100%; height: auto; touch-action: none; }
+
+#banner {
+  position: absolute;
+  top: 38%;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: "Creepster", cursive;
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  letter-spacing: 2px;
+  color: var(--orange);
+  text-shadow: 0 0 24px #000, 0 0 6px #000;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.3s, transform 0.3s;
+}
+#banner.show { opacity: 1; transform: scale(1); }
+#banner.finale { color: var(--danger); }
+
+/* ── Écrans ──────────────────────────────────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px;
+  text-align: center;
+  background: rgba(13, 10, 20, 0.86);
+  backdrop-filter: blur(2px);
+}
+.screen p { max-width: 480px; margin: 0; color: var(--muted); line-height: 1.5; }
+.hidden { display: none !important; }
+
+h1, h2 {
+  margin: 0;
+  font-family: "Creepster", cursive;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--orange);
+  text-shadow: 0 0 20px rgba(255, 140, 26, 0.4);
+}
+h1 { font-size: clamp(2.4rem, 7vw, 4.4rem); }
+h2 { font-size: clamp(2rem, 5vw, 3rem); }
+
+button.big {
+  padding: 12px 36px;
+  border: none;
+  border-radius: 12px;
+  background: var(--orange);
+  color: #1a0f05;
+  font: 800 1.2rem system-ui, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #a85a10;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+button.big:active { transform: translateY(4px); box-shadow: 0 2px 0 #a85a10; }
+button.ghost {
+  padding: 8px 20px;
+  border: 2px solid var(--panel-2);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+footer { text-align: center; font-size: 0.82rem; color: var(--muted); line-height: 1.9; }
+kbd {
+  padding: 1px 6px;
+  border: 1px solid var(--panel-2);
+  border-radius: 4px;
+  background: var(--panel);
+  font-size: 0.78rem;
+}
+
+@keyframes bump { 50% { transform: scale(1.15); } }
+@keyframes shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@media (max-width: 640px) {
+  #app { padding: 8px; }
+  #resources { font-size: 1.2rem; min-width: 80px; }
+  .card { width: 54px; height: 68px; }
+  .card-icon { font-size: 1.5rem; }
+}

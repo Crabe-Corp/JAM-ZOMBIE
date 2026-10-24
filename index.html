@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Citrouilles vs Zombies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Barre du haut : rôle B -->
+    <header id="hud">
+      <div id="resources" title="Bonbons">🍬 <span id="resources-count">0</span></div>
+      <div id="card-bar"></div>
+      <div id="wave">
+        <div id="wave-label">Vague 0/0</div>
+        <div id="wave-bar"><div id="wave-fill"></div></div>
+      </div>
+      <button id="btn-pause" class="icon-btn" title="Pause (P)">⏸</button>
+    </header>
+
+    <main id="stage">
+      <canvas id="game"></canvas>
+      <div id="banner"></div>
+
+      <section class="screen" id="screen-title">
+        <h1>Citrouilles vs Zombies</h1>
+        <p>Les morts sortent du cimetière. Plante tes citrouilles et protège la maison jusqu'à l'aube.</p>
+        <button id="btn-play" class="big">Jouer</button>
+      </section>
+
+      <section class="screen hidden" id="screen-pause">
+        <h2>Pause</h2>
+        <button id="btn-resume" class="big">Reprendre</button>
+        <button id="btn-quit" class="ghost">Retour au menu</button>
+      </section>
+
+      <section class="screen hidden" id="screen-end">
+        <h2 id="end-title"></h2>
+        <p id="end-text"></p>
+        <button id="btn-restart" class="big">Rejouer</button>
+      </section>
+    </main>
+
+    <footer>
+      Clique une carte puis une case · ramasse les 🍬 · <kbd>1</kbd>–<kbd>3</kbd> cartes ·
+      <kbd>S</kbd> pelle · <kbd>Échap</kbd> annuler · <kbd>P</kbd> pause · <kbd>M</kbd> son
+    </footer>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

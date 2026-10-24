@@ -1,0 +1,44 @@
+{
+  "niveaux": [
+    {
+      "id": "cimetiere",
+      "nom": "Le cimetière oublié",
+      "ressourcesDepart": 150,
+      "intervalleCiel": 8,
+      "valeurBonbonCiel": 25,
+      "vagues": [
+        {
+          "temps": 22,
+          "zombies": [
+            { "type": "basique", "nombre": 3, "intervalle": 9 }
+          ]
+        },
+        {
+          "temps": 55,
+          "zombies": [
+            { "type": "basique", "nombre": 4, "intervalle": 6 },
+            { "type": "chauve-souris", "nombre": 2, "intervalle": 8, "decalage": 5 }
+          ]
+        },
+        {
+          "temps": 95,
+          "zombies": [
+            { "type": "goule", "nombre": 2, "intervalle": 8 },
+            { "type": "basique", "nombre": 5, "intervalle": 4, "decalage": 3 },
+            { "type": "chauve-souris", "nombre": 3, "intervalle": 5, "decalage": 10 }
+          ]
+        },
+        {
+          "temps": 140,
+          "finale": true,
+          "zombies": [
+            { "type": "basique", "nombre": 8, "intervalle": 1.8 },
+            { "type": "goule", "nombre": 3, "intervalle": 4, "decalage": 4 },
+            { "type": "chauve-souris", "nombre": 4, "intervalle": 2.5, "decalage": 6 },
+            { "type": "dracula", "nombre": 1, "decalage": 12, "ligne": 2 }
+          ]
+        }
+      ]
+    }
+  ]
+}

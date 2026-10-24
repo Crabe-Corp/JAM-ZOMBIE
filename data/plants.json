@@ -1,0 +1,41 @@
+[
+  {
+    "id": "citrouille",
+    "nom": "Citrouille lanceuse",
+    "description": "Crache des graines enflammées sur les zombies de sa ligne.",
+    "emoji": "🎃",
+    "type": "tireur",
+    "cout": 100,
+    "vie": 300,
+    "degats": 20,
+    "cadence": 1.4,
+    "vitesseProjectile": 330,
+    "couleurProjectile": "#ff8c1a",
+    "recharge": 6,
+    "rechargeInitiale": 0
+  },
+  {
+    "id": "bougie",
+    "nom": "Bougie ensorcelée",
+    "description": "Fait apparaître des bonbons régulièrement.",
+    "emoji": "🕯️",
+    "type": "producteur",
+    "cout": 50,
+    "vie": 250,
+    "production": 25,
+    "intervalleProduction": 11,
+    "recharge": 6,
+    "rechargeInitiale": 0
+  },
+  {
+    "id": "tombe",
+    "nom": "Pierre tombale",
+    "description": "Très solide. Bloque les zombies le temps que les citrouilles tirent.",
+    "emoji": "🪦",
+    "type": "mur",
+    "cout": 50,
+    "vie": 1600,
+    "recharge": 20,
+    "rechargeInitiale": 15
+  }
+]
