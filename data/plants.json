@@ -12,7 +12,9 @@
     "vitesseProjectile": 330,
     "couleurProjectile": "#ff8c1a",
     "recharge": 6,
-    "rechargeInitiale": 0
+    "rechargeInitiale": 0,
+    "sprite": "assets/sprites/citrouille.png",
+    "icone": "assets/sprites/citrouille-icon.png"
   },
   {
     "id": "bougie",
@@ -25,7 +27,9 @@
     "production": 25,
     "intervalleProduction": 11,
     "recharge": 6,
-    "rechargeInitiale": 0
+    "rechargeInitiale": 0,
+    "sprite": "assets/sprites/bougie.png",
+    "icone": "assets/sprites/bougie-icon.png"
   },
   {
     "id": "tombe",
@@ -36,7 +40,9 @@
     "cout": 50,
     "vie": 1600,
     "recharge": 20,
-    "rechargeInitiale": 15
+    "rechargeInitiale": 15,
+    "sprite": "assets/sprites/tombe.png",
+    "icone": "assets/sprites/tombe-icon.png"
   },
   {
     "id": "toile",
@@ -53,7 +59,9 @@
     "facteurVitesse": 0.5,
     "dureeRalentissement": 3,
     "recharge": 8,
-    "rechargeInitiale": 10
+    "rechargeInitiale": 10,
+    "sprite": "assets/sprites/toile.png",
+    "icone": "assets/sprites/toile-icon.png"
   },
   {
     "id": "bombe",
@@ -67,7 +75,9 @@
     "rayonExplosion": 140,
     "degatsExplosion": 900,
     "recharge": 35,
-    "rechargeInitiale": 30
+    "rechargeInitiale": 30,
+    "sprite": "assets/sprites/bombe.png",
+    "icone": "assets/sprites/bombe-icon.png"
   },
   {
     "id": "givre",
@@ -82,7 +92,9 @@
     "dureeGel": 4,
     "degatsGel": 20,
     "recharge": 30,
-    "rechargeInitiale": 20
+    "rechargeInitiale": 20,
+    "sprite": "assets/sprites/givre.png",
+    "icone": "assets/sprites/givre-icon.png"
   },
   {
     "id": "piege",
@@ -95,7 +107,9 @@
     "delaiArmement": 10,
     "degatsPiege": 700,
     "recharge": 20,
-    "rechargeInitiale": 15
+    "rechargeInitiale": 15,
+    "sprite": "assets/sprites/piege.png",
+    "icone": "assets/sprites/piege-icon.png"
   },
   {
     "id": "chaudron",
@@ -112,6 +126,8 @@
     "degatsEclaboussure": 15,
     "couleurProjectile": "#7dff5a",
     "recharge": 8,
-    "rechargeInitiale": 10
+    "rechargeInitiale": 10,
+    "sprite": "assets/sprites/chaudron.png",
+    "icone": "assets/sprites/chaudron-icon.png"
   }
 ]

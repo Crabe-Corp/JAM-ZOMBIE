@@ -9,6 +9,15 @@ import { events } from '../events.js';
 import { GRID_X, GRID_Y, COLS, ROWS, CELL_W, CELL_H } from '../config.js';
 
 const RESOURCE_EMOJI = '🍬';
+let candyImg = null;
+function getCandyImg() {
+  if (!candyImg) {
+    candyImg = new Image();
+    candyImg.src = 'assets/sprites/bonbon.png';
+  }
+  return candyImg.complete && candyImg.naturalWidth > 0 ? candyImg : null;
+}
+
 const LIFETIME = 10;      // secondes avant qu'un bonbon posé disparaisse
 const PICK_RADIUS = 40;   // rayon de clic (px)
 const FALL_SPEED = 70;    // px/s

@@ -92,7 +92,7 @@ function buildBar() {
     el.draggable = true;
     el.title = `${def.nom} (${i + 1})\n${def.description ?? ''}`;
     el.innerHTML = `
-      <span class="card-icon">${def.icone ? `<img src="${def.icone}" alt="">` : def.emoji}</span>
+      <span class="card-icon">${def.icone ? `<img src="${def.icone}" alt="${def.nom}">` : (def.sprite ? `<img src="${def.sprite}" alt="${def.nom}">` : def.emoji)}</span>
       <span class="card-cost">🍬 ${def.cout}</span>
       <span class="card-cooldown"></span>`;
 
@@ -107,7 +107,7 @@ function buildBar() {
   shovel.className = 'card shovel';
   shovel.draggable = true;
   shovel.title = 'Retirer une plante (S)';
-  shovel.innerHTML = `<span class="card-icon">⛏️</span><span class="card-cost">Retirer</span>`;
+  shovel.innerHTML = `<span class="card-icon"><img src="assets/icons/shovel.svg" alt="Pelle"></span><span class="card-cost">Retirer</span>`;
 
   setupCardInteractions(shovel, SHOVEL);
 

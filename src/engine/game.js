@@ -35,6 +35,7 @@ export class Game {
     canvas.width = CANVAS_W;
     canvas.height = CANVAS_H;
     this.ctx = canvas.getContext('2d');
+    this.ctx.imageSmoothingEnabled = false;
 
     this.basePlantDefs = {};
     this.plantDefs = {};
@@ -126,7 +127,7 @@ export class Game {
       y: rowCenterY(r),
       state: 'idle',   // 'idle' | 'sweeping' | 'used'
       speed: 440,
-      def: { id: '__balai__', emoji: '🧹' },
+      def: { id: '__balai__', emoji: '🧹', sprite: 'assets/sprites/balai.png' },
     }));
   }
 
@@ -256,6 +257,7 @@ export class Game {
 
   draw(realTime) {
     const ctx = this.ctx;
+    ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     drawBackground(ctx, realTime);   // décor de C
     drawGrid(ctx);

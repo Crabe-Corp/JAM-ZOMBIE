@@ -33,7 +33,7 @@ async function boot() {
     loadJSON('data/upgrades.json'),
     loadJSON('data/textes.json'),
   ]);
-  await loadSprites([...plants, ...zombies]);
+  await loadSprites([...plants, ...zombies, { id: '__balai__', sprite: 'assets/sprites/balai.png' }]);
 
   const canvas = document.getElementById('game');
   const game = new Game(canvas);

@@ -5,7 +5,9 @@
     "emoji": "🧟",
     "vie": 200,
     "vitesse": 18,
-    "degatsParSeconde": 30
+    "degatsParSeconde": 30,
+    "sprite": "assets/sprites/basique.png",
+    "icone": "assets/sprites/basique-icon.png"
   },
   {
     "id": "chauve-souris",
@@ -14,7 +16,9 @@
     "vie": 110,
     "vitesse": 42,
     "degatsParSeconde": 20,
-    "taille": 64
+    "taille": 64,
+    "sprite": "assets/sprites/chauve-souris.png",
+    "icone": "assets/sprites/chauve-souris-icon.png"
   },
   {
     "id": "goule",
@@ -23,7 +27,9 @@
     "vie": 600,
     "vitesse": 14,
     "degatsParSeconde": 45,
-    "taille": 86
+    "taille": 86,
+    "sprite": "assets/sprites/goule.png",
+    "icone": "assets/sprites/goule-icon.png"
   },
   {
     "id": "dracula",
@@ -32,7 +38,9 @@
     "vie": 1800,
     "vitesse": 11,
     "degatsParSeconde": 90,
-    "taille": 100
+    "taille": 100,
+    "sprite": "assets/sprites/dracula.png",
+    "icone": "assets/sprites/dracula-icon.png"
   },
   {
     "id": "loup-garou",
@@ -44,7 +52,9 @@
     "taille": 84,
     "sauteur": true,
     "dureeSaut": 0.8,
-    "vitesseApresSaut": 16
+    "vitesseApresSaut": 16,
+    "sprite": "assets/sprites/loup-garou.png",
+    "icone": "assets/sprites/loup-garou-icon.png"
   },
   {
     "id": "fantome",
@@ -53,6 +63,8 @@
     "vie": 180,
     "vitesse": 20,
     "degatsParSeconde": 25,
-    "fantome": true
+    "fantome": true,
+    "sprite": "assets/sprites/fantome.png",
+    "icone": "assets/sprites/fantome-icon.png"
   }
 ]

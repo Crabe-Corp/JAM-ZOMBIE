@@ -55,7 +55,7 @@ export function initHud(game) {
       if ((e.key === 'v' || e.key === 'V') && state.status === 'playing') game.toggleSpeed();
     });
     events.on('speedChanged', ({ speed }) => {
-      btnSpeed.textContent = speed === 2 ? 'x2' : 'x1';
+      btnSpeed.innerHTML = `<img src="assets/icons/speed.svg" class="svg-icon" alt="" style="width:16px;height:16px;margin-right:4px;">${speed === 2 ? 'x2' : 'x1'}`;
       btnSpeed.classList.toggle('active', speed === 2);
     });
   }

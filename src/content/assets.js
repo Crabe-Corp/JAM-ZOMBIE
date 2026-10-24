@@ -37,12 +37,30 @@ export function drawSprite(ctx, def, x, y, size, opts = {}) {
   ctx.save();
   if (opts.alpha != null) ctx.globalAlpha = opts.alpha;
   if (opts.flash) ctx.filter = 'brightness(1.9)';
+  ctx.imageSmoothingEnabled = false;
 
   const img = images[def.id];
   if (img) {
-    const h = size;
-    const w = (size * img.width) / img.height;
-    ctx.drawImage(img, x - w / 2, y - h / 2, w, h);
+    const frameH = img.height;
+    const frameCount = Math.round(img.width / frameH);
+
+    if (frameCount > 1) {
+      // Spritesheet animé automatique (16 frames)
+      const time = opts.time ?? ((performance.now() / 1000) + (x * 0.03 + y * 0.05));
+      const fps = def.fps ?? 10;
+      const frame = Math.floor(time * fps) % frameCount;
+      const h = size;
+      const w = size;
+      ctx.drawImage(
+        img,
+        frame * frameH, 0, frameH, frameH,
+        Math.round(x - w / 2), Math.round(y - h / 2), Math.round(w), Math.round(h)
+      );
+    } else {
+      const h = size;
+      const w = (size * img.width) / img.height;
+      ctx.drawImage(img, Math.round(x - w / 2), Math.round(y - h / 2), Math.round(w), Math.round(h));
+    }
   } else {
     ctx.font = `${Math.round(size * 0.82)}px ${EMOJI_FONT}`;
     ctx.textAlign = 'center';
