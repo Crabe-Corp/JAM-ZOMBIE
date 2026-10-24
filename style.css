@@ -481,3 +481,40 @@ kbd {
 #screamer-video {
   display: none;
 }
+
+/* ── Screamer Jumpscare Overlay ──────────────────────────── */
+#screamer-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#screamer-overlay.hidden {
+  display: none !important;
+}
+
+#screamer-canvas {
+  width: min(95vw, 1200px);
+  max-height: 92vh;
+  object-fit: contain;
+  filter: drop-shadow(0 0 45px rgba(255, 20, 20, 0.8));
+  animation: screamer-shake 0.05s infinite alternate;
+}
+
+@keyframes screamer-shake {
+  0% { transform: scale(1.02) translate(-9px, -5px); }
+  50% { transform: scale(1.08) translate(0px, 0px); }
+  100% { transform: scale(1.04) translate(9px, 6px); }
+}
+
+#screamer-video {
+  display: none;
+}
+

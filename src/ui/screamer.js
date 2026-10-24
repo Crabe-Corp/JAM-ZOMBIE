@@ -110,3 +110,4 @@ export function initScreamer() {
   // Déclencheur manuel accessible pour tester : window.triggerScreamer()
   window.triggerScreamer = play;
 }
+
