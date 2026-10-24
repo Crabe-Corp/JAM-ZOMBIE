@@ -11,3 +11,4 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     restart: unless-stopped
+
