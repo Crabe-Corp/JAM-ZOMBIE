@@ -5,12 +5,12 @@ Le travail de chacun consiste à l'enrichir et à la rendre belle. Cochez au fur
 
 Priorités : 🔴 indispensable pour la démo · 🟠 important · 🟢 bonus si le temps le permet.
 
-| Rôle | Fichiers | Branche |
-|---|---|---|
-| **A — Moteur et gameplay** | `src/engine/` | `moteur` |
-| **B — Interface et économie** | `src/ui/`, `index.html`, `style.css` | `interface` |
-| **C — Graphismes, son et ambiance** | `assets/`, `src/content/` | `contenu` |
-| **D — Game design, équilibrage et pitch** | `data/`, `docs/`, `pitch/` | `design` |
+| Rôle                                             | Fichiers                                   | Branche       |
+| ------------------------------------------------- | ------------------------------------------ | ------------- |
+| **A — Moteur et gameplay**                 | `src/engine/`                            | `moteur`    |
+| **B — Interface et économie**             | `src/ui/`, `index.html`, `style.css` | `interface` |
+| **C — Graphismes, son et ambiance**        | `assets/`, `src/content/`              | `contenu`   |
+| **D — Game design, équilibrage et pitch** | `data/`, `docs/`, `pitch/`           | `design`    |
 
 ---
 
@@ -32,13 +32,13 @@ Priorités : 🔴 indispensable pour la démo · 🟠 important · 🟢 bonus si
 ## 👤 B — Interface et économie · `src/ui/`, `index.html`, `style.css`
 
 - [ ] 🔴 Corriger le placement au doigt sur tablette/téléphone (D teste et remonte les bugs)
-- [ ] 🔴 Texte flottant « +25 » quand on ramasse un bonbon — `economy.js` (dans `draw`)
-- [ ] 🔴 Écran « Comment jouer » (3 phrases + les 3 cartes expliquées, textes fournis par D) avant la première partie — `menu.js`, `index.html`
-- [ ] 🔴 Appliquer la palette de couleurs choisie par C dans `style.css`
-- [ ] 🟠 Glisser-déposer d'une carte vers la grille (en plus du clic) — `cards.js`
-- [ ] 🟠 Avertissement visuel quand un zombie approche de la maison (bord gauche qui clignote en rouge)
-- [ ] 🟠 Meilleur score / meilleur temps sauvegardé dans `localStorage` sur l'écran de fin
-- [ ] 🟠 Ramassage automatique des bonbons au survol (option dans le menu)
+- [X] 🔴 Texte flottant « +25 » quand on ramasse un bonbon — `economy.js` (dans `draw`)
+- [X] 🔴 Écran « Comment jouer » (3 phrases + les 3 cartes expliquées, textes fournis par D) avant la première partie — `menu.js`, `index.html`
+- [X] 🔴 Appliquer la palette de couleurs choisie par C dans `style.css`
+- [X] 🟠 Glisser-déposer d'une carte vers la grille (en plus du clic) — `cards.js`
+- [X] 🟠 Avertissement visuel quand un zombie approche de la maison (bord gauche qui clignote en rouge)
+- [X] 🟠 Meilleur score / meilleur temps sauvegardé dans `localStorage` sur l'écran de fin
+- [X] 🟠 Ramassage automatique des bonbons au survol (option dans le menu)
 - [ ] 🟢 Choix du niveau sur l'écran titre (si D en fait plusieurs)
 - [ ] 🟢 Écran titre animé (zombies qui passent en fond, sprites fournis par C)
 
