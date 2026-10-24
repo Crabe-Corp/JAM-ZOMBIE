@@ -1,0 +1,13 @@
+services:
+  game:
+    container_name: citrouilles-vs-zombies
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped
