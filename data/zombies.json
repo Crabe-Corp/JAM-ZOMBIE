@@ -33,5 +33,17 @@
     "vitesse": 11,
     "degatsParSeconde": 90,
     "taille": 100
+  },
+  {
+    "id": "loup-garou",
+    "nom": "Loup-garou",
+    "emoji": "🐺",
+    "vie": 340,
+    "vitesse": 32,
+    "degatsParSeconde": 40,
+    "taille": 84,
+    "sauteur": true,
+    "dureeSaut": 0.8,
+    "vitesseApresSaut": 16
   }
 ]
