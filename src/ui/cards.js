@@ -1,7 +1,7 @@
 // =============================================================
 //  CARTES ET PLACEMENT — rôle B (interface)
 //  Barre de cartes, sélection, aperçu sur la grille, pose des
-//  plantes (paiement + temps de recharge) et pelle.
+//  plantes (paiement + temps de recharge), pelle et glisser-déposer.
 // =============================================================
 import { state } from '../state.js';
 import { events } from '../events.js';
@@ -19,6 +19,11 @@ let bar = null;
 let hoverCell = null;
 const cardEls = new Map();
 
+// Gestion du glisser-déposer au pointeur / tactile
+let pointerDragId = null;
+let pointerDragStart = null;
+let isDragging = false;
+
 export function initCards(g, cv, plants) {
   game = g;
   canvas = cv;
@@ -27,12 +32,34 @@ export function initCards(g, cv, plants) {
   buildBar();
 
   canvas.addEventListener('pointerdown', onPointerDown);
-  canvas.addEventListener('pointermove', (e) => {
-    const { x, y } = canvasPos(e);
-    hoverCell = pixelToCell(x, y);
-  });
+  canvas.addEventListener('pointermove', onPointerMove);
   canvas.addEventListener('pointerleave', () => { hoverCell = null; });
   canvas.addEventListener('contextmenu', (e) => { e.preventDefault(); select(null); });
+
+  // HTML5 Drag & Drop sur le canvas (desktop)
+  canvas.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    const { x, y } = canvasPos(e);
+        hoverCell = pixelToCell(x, y);
+  });
+  canvas.addEventListener('dragleave', () => {
+    hoverCell = null;
+  });
+  canvas.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('text/plain') || state.selectedCard;
+    const { x, y } = canvasPos(e);
+    const cell = pixelToCell(x, y);
+    if (cell && id) {
+      tryPlacePlant(id, cell.row, cell.col);
+    }
+    hoverCell = null;
+  });
+
+  // Glisser-déposer universel (pointeur / tactile)
+  window.addEventListener('pointermove', onWindowPointerMove);
+  window.addEventListener('pointerup', onWindowPointerUp);
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') select(null);
@@ -59,23 +86,93 @@ function buildBar() {
   plantList.forEach((def, i) => {
     const el = document.createElement('button');
     el.className = 'card';
+    el.draggable = true;
     el.title = `${def.nom} (${i + 1})\n${def.description ?? ''}`;
     el.innerHTML = `
       <span class="card-icon">${def.icone ? `<img src="${def.icone}" alt="">` : def.emoji}</span>
       <span class="card-cost">🍬 ${def.cout}</span>
       <span class="card-cooldown"></span>`;
-    el.addEventListener('click', () => select(def.id));
+
+    // Événements clic et drag
+    setupCardInteractions(el, def.id, def.cout);
+
     bar.appendChild(el);
     cardEls.set(def.id, el);
   });
 
   const shovel = document.createElement('button');
   shovel.className = 'card shovel';
+  shovel.draggable = true;
   shovel.title = 'Retirer une plante (S)';
   shovel.innerHTML = `<span class="card-icon">⛏️</span><span class="card-cost">Retirer</span>`;
-  shovel.addEventListener('click', () => select(SHOVEL));
+
+  setupCardInteractions(shovel, SHOVEL, 0);
+
   bar.appendChild(shovel);
   cardEls.set(SHOVEL, shovel);
+}
+
+function setupCardInteractions(el, id, cost) {
+  // 1. Clic standard
+  el.addEventListener('click', (e) => {
+    if (isDragging) {
+      e.stopPropagation();
+      return;
+    }
+    select(id);
+  });
+
+  // 2. Glisser-déposer HTML5 (desktop)
+  el.addEventListener('dragstart', (e) => {
+    const cd = state.cooldowns[id] ?? 0;
+    if (id !== SHOVEL && (cd > 0 || !canAfford(cost))) {
+      e.preventDefault();
+      shake(id);
+      return;
+    }
+    e.dataTransfer.setData('text/plain', id);
+    e.dataTransfer.effectAllowed = 'copyMove';
+    select(id);
+  });
+
+  // 3. Glisser-déposer au pointeur (mobile / tactile / souris)
+  el.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    const cd = state.cooldowns[id] ?? 0;
+    if (id !== SHOVEL && (cd > 0 || !canAfford(cost))) {
+      shake(id);
+      return;
+    }
+    pointerDragId = id;
+    pointerDragStart = { x: e.clientX, y: e.clientY };
+    isDragging = false;
+  });
+}
+
+function onWindowPointerMove(e) {
+  if (!pointerDragId) return;
+  if (!isDragging && pointerDragStart && Math.hypot(e.clientX - pointerDragStart.x, e.clientY - pointerDragStart.y) > 8) {
+    isDragging = true;
+    select(pointerDragId);
+  }
+  if (isDragging) {
+    const { x, y } = canvasPos(e);
+        hoverCell = pixelToCell(x, y);
+  }
+}
+
+function onWindowPointerUp(e) {
+  if (pointerDragId && isDragging) {
+    const { x, y } = canvasPos(e);
+    const cell = pixelToCell(x, y);
+    if (cell) {
+      tryPlacePlant(pointerDragId, cell.row, cell.col);
+    }
+    hoverCell = null;
+  }
+  pointerDragId = null;
+  pointerDragStart = null;
+  setTimeout(() => { isDragging = false; }, 50);
 }
 
 function refreshBar() {
@@ -110,7 +207,7 @@ function updateCooldowns(dt) {
   refreshBar();
 }
 
-// ── Clic sur le terrain ───────────────────────────────────────
+// ── Clic et placement sur le terrain ──────────────────────────
 
 function canvasPos(e) {
   const rect = canvas.getBoundingClientRect();
@@ -118,6 +215,11 @@ function canvasPos(e) {
     x: ((e.clientX - rect.left) * canvas.width) / rect.width,
     y: ((e.clientY - rect.top) * canvas.height) / rect.height,
   };
+}
+
+function onPointerMove(e) {
+  const { x, y } = canvasPos(e);
+    hoverCell = pixelToCell(x, y);
 }
 
 function onPointerDown(e) {
@@ -131,23 +233,33 @@ function onPointerDown(e) {
   const id = state.selectedCard;
   if (!cell || !id) return;
 
-  // 2. Pelle
+  tryPlacePlant(id, cell.row, cell.col);
+}
+
+export function tryPlacePlant(id, row, col) {
+  // 1. Pelle
   if (id === SHOVEL) {
-    if (game.removePlant(cell.row, cell.col)) select(null);
-    return;
+    if (game.removePlant(row, col)) {
+      select(null);
+      return true;
+    }
+    return false;
   }
 
-  // 3. Poser une plante
+  // 2. Plante
   const def = game.plantDefs[id];
+  if (!def) return false;
   if ((state.cooldowns[id] ?? 0) > 0 || !canAfford(def.cout)) {
     shake(id);
-    return;
+    return false;
   }
-  if (game.placePlant(id, cell.row, cell.col)) {
+  if (game.placePlant(id, row, col)) {
     spend(def.cout);
     state.cooldowns[id] = def.recharge ?? 0;
     select(null);
+    return true;
   }
+  return false;
 }
 
 // ── Aperçu de placement (dessiné sur le canvas) ───────────────
