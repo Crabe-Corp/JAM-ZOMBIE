@@ -1,0 +1,43 @@
+{
+  "commentJouer": {
+    "titre": "Comment jouer",
+    "phrases": [
+      "Les zombies sortent du cimetière par la droite et marchent vers ta maison, à gauche : s'il en entre un seul, c'est perdu.",
+      "Ramasse les bonbons 🍬 qui tombent du ciel et dépense-les pour poser des plantes sur la pelouse.",
+      "Entre deux vagues, choisis une amélioration : tes plantes deviennent plus fortes jusqu'à la fin de la partie."
+    ],
+    "cartes": [
+      { "plante": "bougie", "texte": "Ta source de bonbons. Pose-en 2 ou 3 dès le début, derrière les autres." },
+      { "plante": "citrouille", "texte": "Ton attaquant de base : elle tire sur tout ce qui avance dans sa ligne." },
+      { "plante": "tombe", "texte": "Un mur. Place-la devant tes citrouilles pour bloquer les zombies." }
+    ],
+    "bouton": "C'est parti !"
+  },
+
+  "conseils": [
+    "Une bougie posée dans les 20 premières secondes rapporte plus que n'importe quelle plante.",
+    "Les loups-garous sautent par-dessus la première plante qu'ils croisent : mets une tombe ou un piège devant pour qu'ils gâchent leur saut.",
+    "Garde une citrouille bombe pour Dracula.",
+    "Le crâne de givre arrête une horde entière pendant 4 s : c'est le moment de poser tes plantes.",
+    "Le piège à loup ne coûte que 25 bonbons mais il lui faut 10 s pour s'armer : pose-le en avance.",
+    "Le chaudron tire par-dessus les tombes : il touche les zombies qui les mangent."
+  ],
+
+  "niveaux": {
+    "cimetiere": "Les morts sortent du cimetière. Tiens jusqu'à l'aube !",
+    "manoir": "Le manoir s'éveille… Loups-garous et deux Dracula t'attendent."
+  },
+
+  "ameliorations": {
+    "titre": "Choisis une amélioration",
+    "sousTitre": "Elle s'applique à toutes les plantes de ce type, posées ou à venir.",
+    "rarete": { "commune": "Commune", "rare": "Rare", "epique": "Épique" }
+  },
+
+  "fin": {
+    "victoireTitre": "Victoire ! 🎃",
+    "victoireTexte": "{niveau} est sauvé en {temps} secondes.",
+    "defaiteTitre": "Ils ont eu ton cerveau… 🧠",
+    "defaiteTexte": "Tu as tenu {temps} secondes et {vagues} vague(s)."
+  }
+}

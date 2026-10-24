@@ -2,7 +2,7 @@
   {
     "id": "citrouille",
     "nom": "Citrouille lanceuse",
-    "description": "Crache des graines enflammées sur les zombies de sa ligne.",
+    "description": "Crache une graine enflammée toutes les 1,4 s sur le premier zombie de sa ligne.",
     "emoji": "🎃",
     "type": "tireur",
     "cout": 100,
@@ -17,7 +17,7 @@
   {
     "id": "bougie",
     "nom": "Bougie ensorcelée",
-    "description": "Fait apparaître des bonbons régulièrement.",
+    "description": "Ne se bat pas, mais fait apparaître 25 bonbons toutes les 11 s. Pose-en tôt !",
     "emoji": "🕯️",
     "type": "producteur",
     "cout": 50,
@@ -41,7 +41,7 @@
   {
     "id": "toile",
     "nom": "Toile d'araignée",
-    "description": "Tire des boules de soie qui ralentissent les zombies pendant 3 s.",
+    "description": "Ses boules de soie ralentissent de moitié les zombies touchés pendant 3 s.",
     "emoji": "🕸️",
     "type": "tireur",
     "cout": 150,
@@ -58,7 +58,7 @@
   {
     "id": "bombe",
     "nom": "Citrouille bombe",
-    "description": "Explose au bout d'1 s et blesse tous les zombies autour d'elle. Usage unique.",
+    "description": "Explose 1 s après la pose et blesse tous les zombies autour. Usage unique.",
     "emoji": "💣",
     "type": "explosif",
     "cout": 150,
@@ -83,5 +83,35 @@
     "degatsGel": 20,
     "recharge": 30,
     "rechargeInitiale": 20
+  },
+  {
+    "id": "piege",
+    "nom": "Piège à loup",
+    "description": "Pas cher. S'arme en 10 s puis broie le premier zombie qui marche dessus. Usage unique.",
+    "emoji": "🪤",
+    "type": "piege",
+    "cout": 25,
+    "vie": 100,
+    "delaiArmement": 10,
+    "degatsPiege": 700,
+    "recharge": 20,
+    "rechargeInitiale": 15
+  },
+  {
+    "id": "chaudron",
+    "nom": "Chaudron bouillonnant",
+    "description": "Lance une potion par-dessus les plantes. Elle éclabousse les zombies proches de la cible.",
+    "emoji": "🧪",
+    "type": "lanceur",
+    "cout": 175,
+    "vie": 300,
+    "degats": 30,
+    "cadence": 3,
+    "dureeVol": 1,
+    "rayonEclaboussure": 70,
+    "degatsEclaboussure": 15,
+    "couleurProjectile": "#7dff5a",
+    "recharge": 8,
+    "rechargeInitiale": 10
   }
 ]
