@@ -63,14 +63,14 @@ Priorités : 🔴 indispensable pour la démo · 🟠 important · 🟢 bonus si
 
 ## 👤 D — Game design, équilibrage et pitch · `data/`, `docs/`, `pitch/`
 
-- [ ] 🔴 Écrire **dès le début** les stats des plantes `ralentisseur` et `explosif` dans `plants.json` pour que A puisse les coder
-- [ ] 🔴 Jouer 5 parties et **équilibrer** les JSON (trop facile ? trop dur ?). Objectif : on gagne de justesse en jouant bien
+- [x] 🔴 Écrire **dès le début** les stats des plantes `ralentisseur` et `explosif` dans `plants.json` pour que A puisse les coder
+- [x] 🔴 Jouer 5 parties et **équilibrer** les JSON (trop facile ? trop dur ?). Objectif : on gagne de justesse en jouant bien
 - [ ] 🔴 Tester sur tablette/téléphone et après chaque fusion sur `main` : tenir une liste de bugs partagée (qui, quoi, comment reproduire)
-- [ ] 🔴 Préparer le **pitch** : 3 slides + un scénario de démo de 2 minutes (qui joue, quoi montrer, astuce console pour faire apparaître Dracula au bon moment)
-- [ ] 🟠 Concevoir 2 nouvelles plantes et 1 nouveau zombie avec A (règles + stats dans les JSON)
-- [ ] 🟠 Rédiger les textes de l'écran « Comment jouer » et les descriptions des cartes pour B
-- [ ] 🟢 Un 2e niveau dans `levels.json` (plus dur, par exemple « Le manoir »)
-- [ ] 🟢 Mettre à jour `docs/gameplay.md` et `docs/donnees.md` avec les nouveautés
+- [x] 🔴 Préparer le **pitch** : 3 slides + un scénario de démo de 2 minutes (qui joue, quoi montrer, astuce console pour faire apparaître Dracula au bon moment)
+- [x] 🟠 Concevoir 2 nouvelles plantes et 1 nouveau zombie avec A (règles + stats dans les JSON)
+- [x] 🟠 Rédiger les textes de l'écran « Comment jouer » et les descriptions des cartes pour B
+- [x] 🟢 Un 2e niveau dans `levels.json` (plus dur, par exemple « Le manoir »)
+- [x] 🟢 Mettre à jour `docs/gameplay.md` et `docs/donnees.md` avec les nouveautés
 
 **Tester :** modifier un JSON puis recharger la page (Ctrl+Maj+R pour vider le cache).
 
