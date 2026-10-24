@@ -29,24 +29,58 @@
         <h1>Citrouilles vs Zombies</h1>
         <p>Les morts sortent du cimetière. Plante tes citrouilles et protège la maison jusqu'à l'aube.</p>
         <button id="btn-play" class="big">Jouer</button>
+        <label class="menu-option">
+          <input type="checkbox" id="opt-autocollect-title">
+          <span>Ramasser les bonbons au survol</span>
+        </label>
       </section>
 
       <section class="screen hidden" id="screen-pause">
         <h2>Pause</h2>
         <button id="btn-resume" class="big">Reprendre</button>
+        <label class="menu-option">
+          <input type="checkbox" id="opt-autocollect-pause">
+          <span>Ramasser les bonbons au survol</span>
+        </label>
         <button id="btn-quit" class="ghost">Retour au menu</button>
       </section>
 
       <section class="screen hidden" id="screen-end">
         <h2 id="end-title"></h2>
         <p id="end-text"></p>
+        <p id="end-best" class="best-score"></p>
         <button id="btn-restart" class="big">Rejouer</button>
       </section>
     </main>
 
-    <footer>
-      Clique une carte puis une case · ramasse les 🍬 · <kbd>1</kbd>–<kbd>3</kbd> cartes ·
-      <kbd>S</kbd> pelle · <kbd>Échap</kbd> annuler · <kbd>P</kbd> pause · <kbd>M</kbd> son
+    <footer class="card-footer-container">
+      <h2>How to play !</h2>
+      <div class="cards-wrapper">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-header">Posez vos troupes !</div>
+          <div class="card-body">Plantez vos citrouilles sur le terrain de jeu pour tiré sur les zombies.</div>
+          <div class="card-body">Plantez vos bougies pour généré des bonbons.</div>
+          <div class="card-body">Plantez vos pierre tombales pour les protéger des zombies.</div>
+          <!--<div class="card-footer">Footer 1</div>-->
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-header">Comment jouer ?</div>
+          <div class="card-body">Cliquez sur une carte pour la sélectionner, puis cliquez sur une case vide pour la poser.</div>
+          <div class="card-body">Les zombies apparaitront progressivement sur le terrain de jeu depuis la droite du terrain.</div>
+          <!--<div class="card-footer">Footer 2</div> -->
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-header">Comment gagner ?</div>
+          <div class="card-body">Protégez votre maison en plantant des citrouilles et en tuant les zombies.</div>
+          <div class="card-body">Une fois les vagues terminées, vous aurez gagné la partie.</div>
+          <!-- <div class="card-footer">Footer 3</div> -->
+        </div>
+      </div>
     </footer>
   </div>
 

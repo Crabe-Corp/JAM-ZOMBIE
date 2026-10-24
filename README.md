@@ -21,23 +21,23 @@ Le jeu doit être servi par un petit serveur local (un double-clic sur `index.ht
 
 **Sans Docker**, au choix :
 
-| Outil | Commande |
-|---|---|
-| Node | `npm start` ou `npx serve .` |
-| Python | `python3 -m http.server 8080` puis ouvrir http://localhost:8080 |
+| Outil   | Commande                                                                                      |
+| ------- | --------------------------------------------------------------------------------------------- |
+| Node    | `npm start` ou `npx serve .`                                                              |
+| Python  | `python3 -m http.server 8080` puis ouvrir http://localhost:8080                             |
 | VS Code | extension **Live Server** → clic droit sur `index.html` → *Open with Live Server* |
 
 ## Comment jouer
 
 Des zombies arrivent par la droite sur 5 lignes. Pose des plantes avec tes bonbons 🍬 pour protéger la maison à gauche. Gagne en survivant à toutes les vagues.
 
-| Action | Commande |
-|---|---|
+| Action             | Commande                                |
+| ------------------ | --------------------------------------- |
 | Choisir une plante | clic sur la carte, ou `1` `2` `3` |
-| Poser | clic sur une case libre |
-| Pelle | `S` |
-| Ramasser un bonbon | clic dessus |
-| Pause / son | `P` / `M` |
+| Poser              | clic sur une case libre                 |
+| Pelle              | `S`                                   |
+| Ramasser un bonbon | clic dessus                             |
+| Pause / son        | `P` / `M`                           |
 
 ## Documentation
 
@@ -59,12 +59,12 @@ Mettez `DEBUG = true` dans `src/config.js` pour afficher les compteurs d'entité
 
 Chacun travaille **dans ses propres fichiers** pour éviter les conflits Git.
 
-| Rôle | Dossiers / fichiers | Résumé |
-|---|---|---|
-| **A — Moteur et gameplay** | `src/engine/` | boucle de jeu, grille, plantes, zombies, projectiles, vagues, victoire/défaite |
-| **B — Interface et économie** | `src/ui/`, `index.html`, `style.css` | cartes, placement, pelle, bonbons, HUD, menus |
-| **C — Contenu et ambiance** | `data/`, `assets/`, `src/content/` | stats, niveaux, sprites, décor, sons, pitch |
-| **Partagés** (prévenir avant de modifier) | `src/main.js`, `src/config.js`, `src/state.js`, `src/events.js` | les contrats entre vous trois |
+| Rôle                                             | Dossiers / fichiers                                                     | Résumé                                                                        |
+| ------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| **A — Moteur et gameplay**                 | `src/engine/`                                                         | boucle de jeu, grille, plantes, zombies, projectiles, vagues, victoire/défaite |
+| **B — Interface et économie**             | `src/ui/`, `index.html`, `style.css`                              | cartes, placement, pelle, bonbons, HUD, menus                                   |
+| **C — Contenu et ambiance**                | `data/`, `assets/`, `src/content/`                                | stats, niveaux, sprites, décor, sons, pitch                                    |
+| **Partagés** (prévenir avant de modifier) | `src/main.js`, `src/config.js`, `src/state.js`, `src/events.js` | les contrats entre vous trois                                                   |
 
 La liste détaillée des tâches est dans **[TACHES.md](TACHES.md)**. Les `TODO(A)`, `TODO(B)`, `TODO(C)` dans le code indiquent où continuer.
 
@@ -96,21 +96,21 @@ citrouilles-vs-zombies/
 
 **`data/plants.json`** — une entrée par plante :
 
-| Champ | Type | Sens |
-|---|---|---|
-| `id` | texte | identifiant unique, sans espace |
-| `nom`, `description` | texte | affichés sur la carte (infobulle) |
-| `emoji` | texte | affiché tant qu'il n'y a pas de sprite |
-| `sprite` | chemin | *(optionnel)* image sur le terrain, ex. `assets/sprites/citrouille.png` |
-| `icone` | chemin | *(optionnel)* image sur la carte |
-| `type` | `tireur` · `producteur` · `mur` | comportement |
-| `cout` | nombre | prix en bonbons |
-| `vie` | nombre | points de vie |
-| `recharge` | secondes | délai avant de pouvoir en reposer une |
-| `rechargeInitiale` | secondes | délai au début de la partie |
-| `degats`, `cadence` | nombre, secondes | *tireur* : dégâts par tir, temps entre deux tirs |
-| `vitesseProjectile`, `couleurProjectile` | px/s, couleur | *tireur* |
-| `production`, `intervalleProduction` | nombre, secondes | *producteur* : bonbons produits et fréquence |
+| Champ                                        | Type                                    | Sens                                                                        |
+| -------------------------------------------- | --------------------------------------- | --------------------------------------------------------------------------- |
+| `id`                                       | texte                                   | identifiant unique, sans espace                                             |
+| `nom`, `description`                     | texte                                   | affichés sur la carte (infobulle)                                          |
+| `emoji`                                    | texte                                   | affiché tant qu'il n'y a pas de sprite                                     |
+| `sprite`                                   | chemin                                  | *(optionnel)* image sur le terrain, ex. `assets/sprites/citrouille.png` |
+| `icone`                                    | chemin                                  | *(optionnel)* image sur la carte                                          |
+| `type`                                     | `tireur` · `producteur` · `mur` | comportement                                                                |
+| `cout`                                     | nombre                                  | prix en bonbons                                                             |
+| `vie`                                      | nombre                                  | points de vie                                                               |
+| `recharge`                                 | secondes                                | délai avant de pouvoir en reposer une                                      |
+| `rechargeInitiale`                         | secondes                                | délai au début de la partie                                               |
+| `degats`, `cadence`                      | nombre, secondes                        | *tireur* : dégâts par tir, temps entre deux tirs                        |
+| `vitesseProjectile`, `couleurProjectile` | px/s, couleur                           | *tireur*                                                                  |
+| `production`, `intervalleProduction`     | nombre, secondes                        | *producteur* : bonbons produits et fréquence                             |
 
 **`data/zombies.json`** : `id`, `nom`, `emoji`, `sprite` *(opt.)*, `vie`, `vitesse` (px/s, une case = 90 px), `degatsParSeconde`, `taille` *(opt., px, 78 par défaut)*.
 
