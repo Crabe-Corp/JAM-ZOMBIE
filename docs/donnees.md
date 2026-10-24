@@ -13,7 +13,7 @@ Tableau d'objets, un par plante. L'ordre définit l'ordre des cartes et les racc
 | `emoji` | texte | affiché tant qu'il n'y a pas de sprite |
 | `sprite` | chemin | *(optionnel)* image sur le terrain |
 | `icone` | chemin | *(optionnel)* image sur la carte |
-| `type` | `tireur` · `producteur` · `mur` | comportement |
+| `type` | `tireur` · `producteur` · `mur` · `explosif` · `gel` | comportement |
 | `cout` | nombre | prix en bonbons |
 | `vie` | nombre | points de vie |
 | `recharge` | secondes | délai avant de reposer la même plante |
@@ -21,6 +21,28 @@ Tableau d'objets, un par plante. L'ordre définit l'ordre des cartes et les racc
 | `degats`, `cadence` | nombre, secondes | *tireur* : dégâts par tir, temps entre deux tirs |
 | `vitesseProjectile`, `couleurProjectile` | px/s, couleur | *tireur* (défauts : 320 et `#ff8c1a`) |
 | `production`, `intervalleProduction` | nombre, secondes | *producteur* : bonbons produits et fréquence |
+| `facteurVitesse`, `dureeRalentissement` | 0 à 1, secondes | *tireur* *(optionnel)* : le zombie touché avance à `vitesse × facteurVitesse` pendant la durée (ex. toile : 0.5 et 3 s) |
+| `delaiExplosion`, `rayonExplosion`, `degatsExplosion` | secondes, px, nombre | *explosif* : explose après le délai, blesse tous les zombies dans le rayon, puis disparaît |
+| `delaiGel`, `rayonGel`, `dureeGel`, `degatsGel` | secondes, px, secondes, nombre | *gel* : après le délai, immobilise tous les zombies dans le rayon et leur inflige `degatsGel`, puis disparaît |
+
+Repères pour les rayons : une case fait 90 × 96 px, donc 140 px ≈ un carré de 3 × 3 cases autour de la plante, 230 px ≈ 5 × 5.
+
+### Stats ajoutées par les améliorations
+
+Ces stats n'existent pas dans `plants.json` : elles valent leur valeur par défaut tant qu'aucune amélioration ne les change.
+
+| Champ | Défaut | Sens |
+|---|---|---|
+| `projectilesParTir` | 1 | *tireur* : graines tirées à chaque tir (la 2e part ~0,15 s après) |
+| `perforation` | 0 | *tireur* : nombre de zombies supplémentaires traversés par une graine |
+| `lignesTir` | 1 | *tireur* : 1 = sa ligne, 3 = aussi la ligne au-dessus et en dessous |
+| `degatsBrulure`, `dureeBrulure` | 0, 0 | *tireur* : dégâts par seconde infligés au zombie touché, pendant la durée |
+| `regeneration` | 0 | PV regagnés par seconde (sans dépasser la vie max) |
+| `degatsEpines` | 0 | dégâts par seconde infligés au zombie qui mord la plante |
+| `reductionMorsure` | 0 | 0 à 1 : part des dégâts de morsure annulée (0.4 = −40 %) |
+| `degatsMort`, `rayonMort` | 0, 0 | explosion quand la plante meurt mangée (pas à la pelle) |
+| `chanceBonbonDore` | 0 | *producteur* : probabilité qu'un bonbon vaille `multiplicateurBonbonDore` fois plus |
+| `facteurVitesseApresGel`, `dureeApresGel` | 1, 0 | *gel* : ralentissement appliqué quand le gel se termine |
 
 ## `zombies.json`
 
@@ -33,6 +55,43 @@ Tableau d'objets, un par plante. L'ordre définit l'ordre des cartes et les racc
 | `vitesse` | px/s | une case = 90 px |
 | `degatsParSeconde` | nombre | dégâts infligés à la plante mangée |
 | `taille` | px | *(optionnel)* taille du dessin, 78 par défaut |
+
+## `upgrades.json` — améliorations roguelike
+
+Avant chaque vague (sauf la première), le jeu se met en pause et propose `choixProposes` améliorations tirées au hasard. Le joueur en choisit une. Elle s'applique **tout de suite et jusqu'à la fin de la partie** à toutes les plantes de ce type, celles déjà posées comme les prochaines.
+
+`regles` :
+
+| Champ | Sens |
+|---|---|
+| `choixProposes` | nombre de cartes d'amélioration proposées (3) |
+| `seulementPlantesDuDeck` | ne proposer que des améliorations des plantes disponibles |
+| `poidsRarete` | chances relatives de tirer une amélioration `commune`, `rare` ou `epique` |
+| `multiplicateurBonbonDore` | valeur d'un bonbon doré (x3) |
+
+Une amélioration :
+
+```json
+{ "id": "citrouille-gerbe", "plante": "citrouille", "nom": "Gerbe de graines", "emoji": "🎆",
+  "description": "Tire aussi sur les lignes du dessus et du dessous.", "rarete": "epique", "niveauMax": 1,
+  "requiert": "citrouille-tir-double",
+  "effets": [ { "stat": "lignesTir", "fixe": 3 } ] }
+```
+
+| Champ | Sens |
+|---|---|
+| `plante` | `id` de la plante concernée, ou `"*"` pour toutes |
+| `rarete` | `commune` · `rare` · `epique` |
+| `niveauMax` | combien de fois on peut la prendre (les effets se cumulent) |
+| `requiert` | *(optionnel)* `id` d'une amélioration à avoir déjà prise |
+| `effets` | liste de modifications de stats |
+
+Chaque effet a un `stat` et **une** opération, appliquée à la valeur actuelle :
+- `"ajout": n` → stat + n
+- `"mult": n` → stat × n (0.8 sur `cadence` = tire 20 % plus vite)
+- `"fixe": n` → stat = n
+
+Quand `vie` augmente, la vie actuelle des plantes posées augmente d'autant. Avec `"plante": "*"`, les stats `valeurBonbonCiel` et `intervalleCiel` modifient le niveau au lieu des plantes.
 
 ## `levels.json`
 

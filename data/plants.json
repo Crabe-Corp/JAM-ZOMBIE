@@ -37,5 +37,51 @@
     "vie": 1600,
     "recharge": 20,
     "rechargeInitiale": 15
+  },
+  {
+    "id": "toile",
+    "nom": "Toile d'araignée",
+    "description": "Tire des boules de soie qui ralentissent les zombies pendant 3 s.",
+    "emoji": "🕸️",
+    "type": "tireur",
+    "cout": 150,
+    "vie": 300,
+    "degats": 12,
+    "cadence": 1.6,
+    "vitesseProjectile": 300,
+    "couleurProjectile": "#e8ecff",
+    "facteurVitesse": 0.5,
+    "dureeRalentissement": 3,
+    "recharge": 8,
+    "rechargeInitiale": 10
+  },
+  {
+    "id": "bombe",
+    "nom": "Citrouille bombe",
+    "description": "Explose au bout d'1 s et blesse tous les zombies autour d'elle. Usage unique.",
+    "emoji": "💣",
+    "type": "explosif",
+    "cout": 150,
+    "vie": 300,
+    "delaiExplosion": 1,
+    "rayonExplosion": 140,
+    "degatsExplosion": 900,
+    "recharge": 35,
+    "rechargeInitiale": 30
+  },
+  {
+    "id": "givre",
+    "nom": "Crâne de givre",
+    "description": "Gèle sur place tous les zombies autour de lui pendant 4 s. Usage unique.",
+    "emoji": "🧊",
+    "type": "gel",
+    "cout": 75,
+    "vie": 100,
+    "delaiGel": 0.5,
+    "rayonGel": 230,
+    "dureeGel": 4,
+    "degatsGel": 20,
+    "recharge": 30,
+    "rechargeInitiale": 20
   }
 ]
