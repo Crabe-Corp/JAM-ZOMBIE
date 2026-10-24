@@ -54,7 +54,9 @@ body {
 }
 #resources.bump { animation: bump 0.25s; }
 
-#card-bar { display: flex; gap: 8px; flex: 1; overflow-x: auto; padding: 4px 2px; }
+/* Cartes sur leur propre ligne : 8 plantes + la pelle ne tiennent pas à côté du reste */
+#card-bar { order: 10; flex: 1 0 100%; display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 2px; }
+#wave { margin-left: auto; }
 
 .card {
   position: relative;
@@ -193,6 +195,53 @@ button.ghost {
   cursor: pointer;
 }
 
+/* ── Choix du niveau, vitesse ────────────────────────────── */
+#level-select { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.level-btn {
+  padding: 8px 16px;
+  border: 2px solid var(--panel-2);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--muted);
+  font: 600 0.95rem system-ui, sans-serif;
+  cursor: pointer;
+}
+.level-btn.selected { border-color: var(--orange); color: var(--text); box-shadow: 0 0 10px rgba(255, 140, 26, 0.4); }
+#btn-speed { font-size: 0.95rem; font-weight: 800; }
+#btn-speed.active { border-color: var(--orange); color: var(--orange); }
+
+/* ── Écran d'amélioration ────────────────────────────────── */
+#upgrade-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.upgrade-card {
+  position: relative;
+  width: 200px;
+  min-height: 210px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 3px solid var(--panel-2);
+  border-radius: 14px;
+  background: linear-gradient(#3a2b4d, #221a30);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.upgrade-card:hover { transform: translateY(-4px); }
+.upgrade-card.commune { border-color: #8a8f98; }
+.upgrade-card.rare { border-color: #4aa3ff; box-shadow: 0 0 14px rgba(74, 163, 255, 0.35); }
+.upgrade-card.epique { border-color: #c06bff; box-shadow: 0 0 18px rgba(192, 107, 255, 0.5); }
+.upgrade-key { position: absolute; top: 6px; left: 10px; font-size: 0.75rem; color: var(--muted); }
+.upgrade-emoji { font-size: 2.4rem; line-height: 1.1; }
+.upgrade-name { font-weight: 800; font-size: 1.05rem; color: var(--orange); }
+.upgrade-plant { font-size: 0.8rem; color: var(--muted); }
+.upgrade-desc { font-size: 0.88rem; line-height: 1.35; }
+.upgrade-rarity { margin-top: auto; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.upgrade-card.rare .upgrade-rarity { color: #4aa3ff; }
+.upgrade-card.epique .upgrade-rarity { color: #c06bff; }
+
 /* ── Options de menu & Scores ────────────────────────────── */
 .menu-option {
   display: flex;
@@ -230,8 +279,8 @@ button.ghost {
   margin: 0;
 }
 
-/* ── Footer : How to play ────────────────────────────────── */
-.card-footer-container {
+/* ── Footer : Comment jouer ────────────────────────────────── */
+.howto {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -246,7 +295,7 @@ button.ghost {
   text-align: center;
 }
 
-.cards-wrapper {
+.howto-wrapper {
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -255,7 +304,7 @@ button.ghost {
   flex-wrap: wrap;
 }
 
-.card-footer-container .card {
+.howto-card {
   flex: 1 1 240px;
   max-width: 300px;
   min-height: 160px;
@@ -275,13 +324,13 @@ button.ghost {
   transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
-.card-footer-container .card:hover {
+.howto-card:hover {
   transform: translateY(-3px);
   border-color: var(--orange);
   box-shadow: 0 4px 16px rgba(255, 140, 26, 0.15);
 }
 
-.card-footer-container .card-header {
+.howto-header {
   font-family: "Creepster", cursive;
   font-size: 1.3rem;
   letter-spacing: 1px;
@@ -289,7 +338,7 @@ button.ghost {
   margin-bottom: 4px;
 }
 
-.card-footer-container .card-body {
+.howto-body {
   width: 100%;
   padding: 10px 12px;
   background: rgba(0, 0, 0, 0.28);
@@ -305,7 +354,7 @@ button.ghost {
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.card-footer-container .card-body::before {
+.howto-body::before {
   content: "";
   display: inline-block;
   width: 6px;
@@ -317,12 +366,12 @@ button.ghost {
   flex-shrink: 0;
 }
 
-.card-footer-container .card-body:hover {
+.howto-body:hover {
   background-color: rgba(0, 0, 0, 0.42);
   border-color: rgba(255, 140, 26, 0.28);
 }
 
-.card-footer-container .card-footer {
+.howto-footer {
   font-size: 0.8rem;
   color: var(--muted);
   border-top: 1px solid var(--panel-2);
@@ -332,6 +381,7 @@ button.ghost {
 }
 
 footer { text-align: center; font-size: 0.82rem; color: var(--muted); line-height: 1.9; }
+.controls { margin: 0; }
 kbd {
   padding: 1px 6px;
   border: 1px solid var(--panel-2);
@@ -349,6 +399,15 @@ kbd {
 @media (max-width: 640px) {
   #app { padding: 8px; }
   #resources { font-size: 1.2rem; min-width: 80px; }
+  #card-bar { gap: 6px; }
   #card-bar .card { width: 54px; height: 68px; }
   .card-icon { font-size: 1.5rem; }
+  #screen-upgrade { gap: 6px; padding: 8px; justify-content: flex-start; overflow-y: auto; }
+  #screen-upgrade h2 { font-size: 1.4rem; }
+  #upgrade-subtitle { display: none; }
+  #upgrade-choices { gap: 6px; flex-wrap: nowrap; }
+  .upgrade-card { width: 31%; min-height: 0; padding: 8px 6px; gap: 2px; }
+  .upgrade-emoji { font-size: 1.5rem; }
+  .upgrade-name { font-size: 0.8rem; }
+  .upgrade-plant, .upgrade-desc, .upgrade-rarity { font-size: 0.65rem; }
 }

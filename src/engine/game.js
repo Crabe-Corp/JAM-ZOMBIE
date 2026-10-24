@@ -7,12 +7,15 @@
 //    game.newGame(level)                 démarre une partie
 //    game.togglePause()
 //    game.toggleSpeed()                  bascule vitesse x1 / x2
+//    game.chooseUpgrade(id)              choisit une amélioration proposée
 //    game.placePlant(typeId, row, col)   → true si posée (B gère le paiement)
 //    game.removePlant(row, col)          → la plante retirée ou null
 //    game.spawnZombie(typeId, row)       (utile pour tester dans la console)
 //    game.addUpdater(fn(dt, game))       B/C ajoutent leur logique à chaque frame
 //    game.addLayer(fn(ctx, game))        B/C dessinent par-dessus le jeu
 //    game.plantDefs / game.zombieDefs    stats chargées depuis les JSON
+//                                        (plantDefs = copie améliorée pendant la partie)
+//    game.level                          copie du niveau en cours (améliorable)
 //    game.waves.progress                 0 → 1
 // =============================================================
 import { CANVAS_W, CANVAS_H, ROWS, HOUSE_X, DEBUG } from '../config.js';
@@ -23,64 +26,8 @@ import { Plant } from './entities/plant.js';
 import { Zombie } from './entities/zombie.js';
 import { Projectile } from './entities/projectile.js';
 import { WaveManager } from './waves.js';
+import { UpgradeManager } from './upgrades.js';
 import { drawBackground, drawSprite } from '../content/assets.js';
-
-const DEFAULT_PLANTS = [
-  {
-    id: 'ralentisseur',
-    nom: "Toile d'araignée",
-    description: 'Ses projectiles engluent et ralentissent les zombies pendant 3 s.',
-    emoji: '🕸️',
-    type: 'ralentisseur',
-    cout: 125,
-    vie: 300,
-    degats: 15,
-    cadence: 1.5,
-    dureeRalentissement: 3,
-    ralentissement: 0.5,
-    vitesseProjectile: 320,
-    couleurProjectile: '#9be7ff',
-    recharge: 7,
-    rechargeInitiale: 0,
-  },
-  {
-    id: 'explosif',
-    nom: 'Citrouille bombe',
-    description: 'Explose au bout d’1 s et blesse tous les zombies alentour.',
-    emoji: '💣',
-    type: 'explosif',
-    cout: 150,
-    vie: 1000,
-    degats: 550,
-    delaiExplosion: 1.0,
-    rayon: 140,
-    recharge: 20,
-    rechargeInitiale: 5,
-  },
-];
-
-const DEFAULT_ZOMBIES = [
-  {
-    id: 'sauteur',
-    nom: 'Zombie sauteur',
-    emoji: '🦘',
-    type: 'sauteur',
-    peutSauter: true,
-    vie: 240,
-    vitesse: 24,
-    degatsParSeconde: 30,
-  },
-  {
-    id: 'fantome',
-    nom: 'Zombie fantôme',
-    emoji: '👻',
-    type: 'fantome',
-    fantome: true,
-    vie: 180,
-    vitesse: 20,
-    degatsParSeconde: 25,
-  },
-];
 
 export class Game {
   constructor(canvas) {
@@ -89,10 +36,12 @@ export class Game {
     canvas.height = CANVAS_H;
     this.ctx = canvas.getContext('2d');
 
+    this.basePlantDefs = {};
     this.plantDefs = {};
     this.zombieDefs = {};
     this.level = null;
     this.waves = new WaveManager();
+    this.upgrades = new UpgradeManager();
     this.updaters = [];
     this.layers = [];
     this.explosions = [];
@@ -103,11 +52,11 @@ export class Game {
     requestAnimationFrame(this.loop);
   }
 
-  setData({ plants, zombies }) {
-    for (const p of DEFAULT_PLANTS) this.plantDefs[p.id] = p;
-    for (const z of DEFAULT_ZOMBIES) this.zombieDefs[z.id] = z;
-    for (const p of plants) this.plantDefs[p.id] = p;
+  setData({ plants, zombies, upgrades }) {
+    for (const p of plants) this.basePlantDefs[p.id] = p;
     for (const z of zombies) this.zombieDefs[z.id] = z;
+    this.plantDefs = structuredClone(this.basePlantDefs);
+    this.upgrades.setData(upgrades);
   }
 
   addUpdater(fn) { this.updaters.push(fn); }
@@ -116,7 +65,10 @@ export class Game {
   // ── Cycle de partie ──────────────────────────────────────────
 
   newGame(level) {
-    this.level = level;
+    // Copies : les améliorations modifient les stats le temps d'une partie seulement
+    this.level = structuredClone(level);
+    this.plantDefs = structuredClone(this.basePlantDefs);
+    this.upgrades.reset();
     resetState({
       status: 'playing',
       resources: level.ressourcesDepart ?? 150,
@@ -124,8 +76,8 @@ export class Game {
     });
     this.explosions = [];
     this.mowers = this.createMowers();
-    this.waves.reset(level);
-    events.emit('gameStart', { level });
+    this.waves.reset(this.level);
+    events.emit('gameStart', { level: this.level });
   }
 
   togglePause() {
@@ -146,6 +98,11 @@ export class Game {
     this.speedMultiplier = speed === 2 ? 2 : 1;
     state.speed = this.speedMultiplier;
     events.emit('speedChanged', { speed: this.speedMultiplier });
+  }
+
+  chooseUpgrade(id) {
+    if (state.status !== 'choosing') return false;
+    return this.upgrades.choose(id, this);
   }
 
   lose() {
@@ -215,14 +172,26 @@ export class Game {
 
   // ── Explosions (plante explosif 💣) ──────────────────────────
 
+  /** Zombies vivants à moins de `radius` px de (x, y). */
+  zombiesInRadius(x, y, radius) {
+    return state.zombies.filter(
+      (z) => !z.dead && !z.dying && z.x < CANVAS_W && Math.hypot(z.x - x, z.y - y) <= radius,
+    );
+  }
+
   triggerExplosion(x, y, radius, damage) {
-    for (const z of state.zombies) {
-      if (z.dead || z.dying) continue;
-      if (Math.hypot(z.x - x, z.y - y) <= radius) {
-        z.takeDamage(damage);
-      }
+    for (const z of this.zombiesInRadius(x, y, radius)) z.takeDamage(damage);
+    this.explosions.push({ x, y, radius, timer: 0, duration: 0.35, kind: 'feu' });
+  }
+
+  // ── Gel (plante gel 🧊) ──────────────────────────────────────
+
+  triggerFreeze(x, y, radius, duration, damage, after = {}) {
+    for (const z of this.zombiesInRadius(x, y, radius)) {
+      z.takeDamage(damage);
+      z.applyFreeze(duration, after.factor, after.duration);
     }
-    this.explosions.push({ x, y, radius, timer: 0, duration: 0.35 });
+    this.explosions.push({ x, y, radius, timer: 0, duration: 0.5, kind: 'gel' });
   }
 
   updateExplosions(dt) {
@@ -237,14 +206,15 @@ export class Game {
       ctx.save();
       ctx.globalAlpha = 1 - t;
       const grad = ctx.createRadialGradient(ex.x, ex.y, 4, ex.x, ex.y, currentR);
-      grad.addColorStop(0, 'rgba(255, 240, 150, 0.95)');
-      grad.addColorStop(0.5, 'rgba(255, 120, 20, 0.65)');
-      grad.addColorStop(1, 'rgba(255, 50, 0, 0)');
+      const ice = ex.kind === 'gel';
+      grad.addColorStop(0, ice ? 'rgba(235, 250, 255, 0.95)' : 'rgba(255, 240, 150, 0.95)');
+      grad.addColorStop(0.5, ice ? 'rgba(120, 200, 255, 0.6)' : 'rgba(255, 120, 20, 0.65)');
+      grad.addColorStop(1, ice ? 'rgba(80, 160, 255, 0)' : 'rgba(255, 50, 0, 0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(ex.x, ex.y, currentR, 0, Math.PI * 2);
       ctx.fill();
-      drawSprite(ctx, { id: '__explosion__', emoji: '💥' }, ex.x, ex.y, 84 * (0.8 + 0.5 * t), {
+      drawSprite(ctx, { id: '__explosion__', emoji: ice ? '❄️' : '💥' }, ex.x, ex.y, 84 * (0.8 + 0.5 * t), {
         alpha: 1 - t,
       });
       ctx.restore();
@@ -323,7 +293,7 @@ export class Game {
       return false;
     }
     if (getPlantAt(row, col)) return false;
-    const plant = new Plant(def, row, col);
+    const plant = new Plant(def, row, col, this);
     state.plants.push(plant);
     events.emit('plantPlaced', { plant });
     return true;
@@ -351,18 +321,43 @@ export class Game {
 
   // ── Helpers utilisés par les entités ─────────────────────────
 
-  spawnProjectile(plant) {
+  spawnProjectile(plant, row = plant.row) {
     const d = plant.def;
     const isSlow = d.type === 'ralentisseur' || (d.dureeRalentissement ?? 0) > 0;
     const projectile = new Projectile({
       x: plant.x + 24,
-      y: plant.y - 8,
-      row: plant.row,
+      y: rowCenterY(row) - 8,
+      row,
       damage: d.degats ?? 15,
       speed: d.vitesseProjectile ?? 320,
       color: d.couleurProjectile ?? (isSlow ? '#9be7ff' : '#ff8c1a'),
       slowDuration: isSlow ? (d.dureeRalentissement ?? 3) : 0,
-      slowFactor: d.ralentissement ?? d.facteurRalentissement ?? 0.5,
+      slowFactor: d.facteurVitesse ?? d.ralentissement ?? 0.5,
+      pierce: d.perforation ?? 0,
+      burnDps: d.degatsBrulure ?? 0,
+      burnDuration: d.dureeBrulure ?? 0,
+    });
+    state.projectiles.push(projectile);
+    events.emit('projectileFired', { projectile, plant });
+  }
+
+  /** Potion lancée en cloche sur un zombie précis (plante lanceur 🧪). */
+  spawnLob(plant, target) {
+    const d = plant.def;
+    const projectile = new Projectile({
+      x: plant.x,
+      y: plant.y - 20,
+      row: plant.row,
+      damage: d.degats ?? 30,
+      color: d.couleurProjectile ?? '#7dff5a',
+      slowDuration: d.dureeRalentissement ?? 0,
+      slowFactor: d.facteurVitesse ?? 0.5,
+      lob: {
+        target,
+        duration: d.dureeVol ?? 1,
+        splashRadius: d.rayonEclaboussure ?? 0,
+        splashDamage: d.degatsEclaboussure ?? 0,
+      },
     });
     state.projectiles.push(projectile);
     events.emit('projectileFired', { projectile, plant });
@@ -375,11 +370,21 @@ export class Game {
     );
   }
 
+  /** Premier zombie visible devant cette position (le plus proche), ou null. */
+  firstZombieAhead(row, x) {
+    let best = null;
+    for (const z of state.zombies) {
+      if (z.dead || z.dying || z.row !== row || z.x <= x || z.x >= CANVAS_W - 10) continue;
+      if (!best || z.x < best.x) best = z;
+    }
+    return best;
+  }
+
   /** Plante que le zombie touche (la plus à droite devant lui), ou null. */
   plantBlocking(row, x) {
     let best = null;
     for (const p of state.plants) {
-      if (p.dead || p.row !== row) continue;
+      if (p.dead || p.row !== row || p.isHidden) continue;   // piège armé : caché sous terre
       if (p.x < x && x - p.x < 50 && (!best || p.x > best.x)) best = p;
     }
     return best;

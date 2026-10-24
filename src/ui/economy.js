@@ -16,12 +16,11 @@ const FALL_SPEED = 70;    // px/s
 const candies = [];
 const collectedLabels = [];
 let skyTimer = 0;
-let skyInterval = 9;
-let skyValue = 25;
+let currentLevel = {};   // niveau en cours (ses valeurs peuvent changer avec les améliorations)
 
 export function initEconomy(game) {
-  events.on('resourceProduced', ({ x, y, amount }) => {
-    spawnCandy(x + (Math.random() * 30 - 15), y - 30, y + 18, amount);
+  events.on('resourceProduced', ({ x, y, amount, golden }) => {
+    spawnCandy(x + (Math.random() * 30 - 15), y - 30, y + 18, amount, golden);
   });
   game.addUpdater(update);
   game.addLayer(draw);
@@ -30,8 +29,7 @@ export function initEconomy(game) {
 export function resetEconomy(level) {
   candies.length = 0;
   collectedLabels.length = 0;
-  skyInterval = level.intervalleCiel ?? 9;
-  skyValue = level.valeurBonbonCiel ?? 25;
+  currentLevel = level;
   skyTimer = 4;
   emitChange();
 }
@@ -62,6 +60,7 @@ export function tryCollectAt(x, y) {
       candies.splice(i, 1);
       collectedLabels.push({ x: c.x, y: c.y, amount: c.amount, age: 0 });
       addResources(c.amount);
+      events.emit('resourceCollected', { amount: c.amount, x: c.x, y: c.y });
       return true;
     }
   }
@@ -79,18 +78,18 @@ function emitChange() {
   events.emit('resourcesChanged', { resources: state.resources });
 }
 
-function spawnCandy(x, y, targetY, amount) {
-  candies.push({ x, y, targetY, amount, age: 0, landed: false, spin: Math.random() * 6 });
+function spawnCandy(x, y, targetY, amount, golden = false) {
+  candies.push({ x, y, targetY, amount, golden, age: 0, landed: false, spin: Math.random() * 6 });
 }
 
 function update(dt) {
   // Bonbons qui tombent du ciel
   skyTimer -= dt;
   if (skyTimer <= 0) {
-    skyTimer = skyInterval;
+    skyTimer = currentLevel.intervalleCiel ?? 9;
     const x = GRID_X + CELL_W / 2 + Math.random() * (COLS - 1) * CELL_W;
     const targetY = GRID_Y + CELL_H / 2 + Math.random() * (ROWS - 1) * CELL_H;
-    spawnCandy(x, -30, targetY, skyValue);
+    spawnCandy(x, -30, targetY, currentLevel.valeurBonbonCiel ?? 25);
   }
 
   for (const c of candies) {
@@ -127,8 +126,10 @@ function draw(ctx) {
 
     // Halo pour qu'on le voie bien
     const glow = ctx.createRadialGradient(c.x, c.y, 2, c.x, c.y, 30);
-    glow.addColorStop(0, 'rgba(255, 190, 90, 0.7)');
-    glow.addColorStop(1, 'rgba(255, 190, 90, 0)');
+    // Bonbon doré (amélioration de la bougie) : halo jaune plus grand
+    const rgb = c.golden ? '255, 225, 60' : '255, 190, 90';
+    glow.addColorStop(0, `rgba(${rgb}, ${c.golden ? 0.95 : 0.7})`);
+    glow.addColorStop(1, `rgba(${rgb}, 0)`);
     ctx.fillStyle = glow;
     ctx.beginPath();
     ctx.arc(c.x, c.y, 30, 0, Math.PI * 2);

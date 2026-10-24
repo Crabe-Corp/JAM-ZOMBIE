@@ -1,6 +1,6 @@
 # Format des données (`data/`)
 
-Les stats et les niveaux sont dans trois fichiers JSON. Pour équilibrer ou ajouter du contenu, il suffit de les modifier : aucun code à toucher.
+Les stats, les niveaux, les améliorations et les textes sont dans cinq fichiers JSON. Pour équilibrer ou ajouter du contenu, il suffit de les modifier : aucun code à toucher.
 
 ## `plants.json`
 
@@ -64,6 +64,7 @@ Les stats de ralentissement (`facteurVitesse`, `dureeRalentissement`) marchent a
 | `sauteur` | booléen | *(optionnel)* saute par-dessus la **première** plante qu'il touche, puis marche normalement |
 | `dureeSaut` | secondes | *sauteur* : durée du saut (il ne peut pas être bloqué pendant ce temps) |
 | `vitesseApresSaut` | px/s | *sauteur* : nouvelle vitesse après le saut |
+| `fantome` | booléen | *(optionnel)* une graine sur deux le traverse (les potions et explosions le touchent toujours) |
 
 ## `upgrades.json` — améliorations roguelike
 
@@ -110,7 +111,7 @@ Dans les textes de fin, `{niveau}`, `{temps}` et `{vagues}` sont à remplacer pa
 
 ## `levels.json`
 
-Objet `{ "niveaux": [ ... ] }`. Seul `niveaux[0]` est joué pour l'instant (voir le TODO dans `main.js`).
+Objet `{ "niveaux": [ ... ] }`. Le joueur choisit le niveau sur l'écran titre, dans l'ordre du tableau.
 
 | Champ | Sens |
 |---|---|

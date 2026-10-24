@@ -45,5 +45,14 @@
     "sauteur": true,
     "dureeSaut": 0.8,
     "vitesseApresSaut": 16
+  },
+  {
+    "id": "fantome",
+    "nom": "Fantôme",
+    "emoji": "👻",
+    "vie": 180,
+    "vitesse": 20,
+    "degatsParSeconde": 25,
+    "fantome": true
   }
 ]

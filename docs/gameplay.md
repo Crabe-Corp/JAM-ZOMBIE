@@ -48,18 +48,21 @@ La liste complète est dans [`data/upgrades.json`](../data/upgrades.json), le fo
 | 🧌 Goule costaude | 600 | 14 | 45 |
 | 🧛 Dracula (boss) | 1800 | 11 | 90 |
 | 🐺 Loup-garou | 340 | 32, puis 16 après son saut | 40 |
+| 👻 Fantôme | 180 | 20 | 25 |
 
 Un zombie avance tant que rien ne le bloque. Dès qu'il touche une plante (moins de 50 px devant lui), il s'arrête et la mange.
 
-Le **loup-garou** saute par-dessus la première plante qu'il touche, puis ralentit. Pour le piéger, place une plante sacrifiable (tombe, piège) devant tes citrouilles.
+Le **loup-garou** saute par-dessus la première plante qu'il touche, puis ralentit. Pour le piéger, place une plante sacrifiable (tombe, piège pas encore armé) devant tes citrouilles.
+
+Le **fantôme** laisse passer une graine sur deux. Les potions du chaudron, les explosions et le gel le touchent normalement.
 
 ## Niveaux
 
 **1. Le cimetière oublié** : départ avec 150 bonbons, un bonbon du ciel toutes les 8 s, 4 vagues (à 22 s, 55 s, 95 s et 140 s). La dernière est la horde finale, avec Dracula sur la ligne du milieu.
 
-**2. Le manoir hanté** (plus dur) : départ avec 125 bonbons, un bonbon du ciel toutes les 10 s, 6 vagues (à 20 s, 50 s, 85 s, 125 s, 170 s et 225 s). Les loups-garous arrivent à la vague 3, un premier Dracula en haut à la vague 5, et la horde finale en amène deux (lignes 2 et 4). Avec 6 vagues, on choisit 5 améliorations.
+**2. Le manoir hanté** (plus dur) : départ avec 125 bonbons, un bonbon du ciel toutes les 10 s, 6 vagues (à 20 s, 50 s, 85 s, 125 s, 170 s et 225 s). Les loups-garous arrivent à la vague 3, les fantômes à la vague 4, un premier Dracula en haut à la vague 5, et la horde finale en amène deux (lignes 2 et 4). Avec 6 vagues, on choisit 5 améliorations.
 
-Pour l'instant seul le premier niveau est jouable (le choix du niveau est une tâche de B).
+Le niveau se choisit sur l'écran titre ; le meilleur score est gardé séparément pour chaque niveau.
 
 ## Contrôles
 
@@ -73,6 +76,8 @@ Pour l'instant seul le premier niveau est jouable (le choix du niveau est une t�
 | Pause | bouton ou touche `P` |
 | Lancer une partie | bouton « Jouer » ou `Entrée` |
 | Couper/remettre le son | `M` |
+| Vitesse x2 | bouton `x1` / `x2`, ou touche `V` |
+| Choisir une amélioration | clic sur la carte, ou `1`, `2`, `3` |
 
 Les `pointerdown` du canvas sont utilisés, donc le jeu répond aussi au doigt.
 

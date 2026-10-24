@@ -16,6 +16,7 @@ export class WaveManager {
     this.time = 0;
     this.waves = level ? level.vagues : [];
     this.nextWave = 0;
+    this.offeredFor = -1;   // dernière vague pour laquelle un choix a été proposé
     this.queue = [];
 
     this.waves.forEach((wave, waveIndex) => {
@@ -40,6 +41,11 @@ export class WaveManager {
 
     // Annonce des vagues
     while (this.nextWave < this.waves.length && this.time >= this.waves[this.nextWave].temps) {
+      // Choix d'amélioration avant la vague : la partie attend que le joueur choisisse
+      if (this.offeredFor !== this.nextWave) {
+        this.offeredFor = this.nextWave;
+        if (game.upgrades.maybeOffer(this.nextWave + 1, game)) return;
+      }
       const wave = this.waves[this.nextWave];
       state.wave = this.nextWave + 1;
       events.emit('waveStart', { index: state.wave, total: this.waves.length, finale: !!wave.finale });

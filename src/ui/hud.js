@@ -1,7 +1,7 @@
 // =============================================================
 //  HUD — rôle B (interface)
 //  Compteur de bonbons, barre de progression des vagues,
-//  bannière d'annonce, bouton pause et avertissement danger maison.
+//  bannière d'annonce, boutons pause / vitesse x2 et avertissement danger maison.
 // =============================================================
 import { state } from '../state.js';
 import { events } from '../events.js';
@@ -13,6 +13,7 @@ export function initHud(game) {
   const waveFill = document.getElementById('wave-fill');
   const banner = document.getElementById('banner');
   const btnPause = document.getElementById('btn-pause');
+  const btnSpeed = document.getElementById('btn-speed');
   const stageEl = document.getElementById('stage');
 
   let bannerTimeout = null;
@@ -47,6 +48,18 @@ export function initHud(game) {
 
   btnPause.addEventListener('click', () => game.togglePause());
 
+  // Vitesse x2 (bouton ou touche V)
+  if (btnSpeed) {
+    btnSpeed.addEventListener('click', () => game.toggleSpeed());
+    window.addEventListener('keydown', (e) => {
+      if ((e.key === 'v' || e.key === 'V') && state.status === 'playing') game.toggleSpeed();
+    });
+    events.on('speedChanged', ({ speed }) => {
+      btnSpeed.textContent = speed === 2 ? 'x2' : 'x1';
+      btnSpeed.classList.toggle('active', speed === 2);
+    });
+  }
+
   game.addUpdater(() => {
     waveFill.style.width = `${Math.round(game.waves.progress * 100)}%`;
   });
@@ -59,7 +72,7 @@ export function initHud(game) {
     }
 
     // HOUSE_X est 75. Les zombies vivants avec x < 240 sont proches de la maison
-    const dangerZombies = state.zombies.filter((z) => !z.dead && z.x < 240);
+    const dangerZombies = state.zombies.filter((z) => !z.dead && !z.dying && z.x < 240);
     const inDanger = dangerZombies.length > 0;
     if (stageEl) stageEl.classList.toggle('danger-alert', inDanger);
 

@@ -61,8 +61,10 @@ export function initCards(g, cv, plants) {
   // Glisser-déposer universel (pointeur / tactile)
   window.addEventListener('pointermove', onWindowPointerMove);
   window.addEventListener('pointerup', onWindowPointerUp);
+  window.addEventListener('pointercancel', cancelPointerDrag);
 
   window.addEventListener('keydown', (e) => {
+    if (state.status !== 'playing') return;   // ex. : 1/2/3 servent au choix d'amélioration
     if (e.key === 'Escape') select(null);
     // Raccourcis 1..9 pour les cartes, S pour la pelle
     const n = parseInt(e.key, 10);
@@ -95,7 +97,7 @@ function buildBar() {
       <span class="card-cooldown"></span>`;
 
     // Événements clic et drag
-    setupCardInteractions(el, def.id, def.cout);
+    setupCardInteractions(el, def.id);
 
     bar.appendChild(el);
     cardEls.set(def.id, el);
@@ -107,13 +109,23 @@ function buildBar() {
   shovel.title = 'Retirer une plante (S)';
   shovel.innerHTML = `<span class="card-icon">⛏️</span><span class="card-cost">Retirer</span>`;
 
-  setupCardInteractions(shovel, SHOVEL, 0);
+  setupCardInteractions(shovel, SHOVEL);
 
   bar.appendChild(shovel);
   cardEls.set(SHOVEL, shovel);
 }
 
-function setupCardInteractions(el, id, cost) {
+/** Stats à jour de la plante (le coût peut changer avec les améliorations). */
+function currentDef(id) {
+  return game.plantDefs[id];
+}
+
+function isUnavailable(id) {
+  if (id === SHOVEL) return false;
+  return (state.cooldowns[id] ?? 0) > 0 || !canAfford(currentDef(id)?.cout ?? 0);
+}
+
+function setupCardInteractions(el, id) {
   // 1. Clic standard
   el.addEventListener('click', (e) => {
     if (isDragging) {
@@ -125,8 +137,9 @@ function setupCardInteractions(el, id, cost) {
 
   // 2. Glisser-déposer HTML5 (desktop)
   el.addEventListener('dragstart', (e) => {
-    const cd = state.cooldowns[id] ?? 0;
-    if (id !== SHOVEL && (cd > 0 || !canAfford(cost))) {
+    // Le navigateur prend la main (et annule le glisser au pointeur) : on oublie celui-ci
+    cancelPointerDrag();
+    if (isUnavailable(id)) {
       e.preventDefault();
       shake(id);
       return;
@@ -139,8 +152,7 @@ function setupCardInteractions(el, id, cost) {
   // 3. Glisser-déposer au pointeur (mobile / tactile / souris)
   el.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
-    const cd = state.cooldowns[id] ?? 0;
-    if (id !== SHOVEL && (cd > 0 || !canAfford(cost))) {
+    if (isUnavailable(id)) {
       shake(id);
       return;
     }
@@ -177,13 +189,23 @@ function onWindowPointerUp(e) {
   setTimeout(() => { isDragging = false; }, 50);
 }
 
+function cancelPointerDrag() {
+  pointerDragId = null;
+  pointerDragStart = null;
+  isDragging = false;
+}
+
 function refreshBar() {
-  for (const def of plantList) {
-    const el = cardEls.get(def.id);
-    const cd = state.cooldowns[def.id] ?? 0;
-    el.classList.toggle('disabled', cd > 0 || !canAfford(def.cout));
-    el.classList.toggle('selected', state.selectedCard === def.id);
-    el.querySelector('.card-cooldown').style.height = `${def.recharge ? (cd / def.recharge) * 100 : 0}%`;
+  for (const { id } of plantList) {
+    const def = currentDef(id);
+    const el = cardEls.get(id);
+    const cd = state.cooldowns[id] ?? 0;
+    el.classList.toggle('disabled', isUnavailable(id));
+    el.classList.toggle('selected', state.selectedCard === id);
+    el.querySelector('.card-cooldown').style.height = `${def.recharge ? Math.min(1, cd / def.recharge) * 100 : 0}%`;
+    const costText = `🍬 ${def.cout}`;
+    const costEl = el.querySelector('.card-cost');
+    if (costEl.textContent !== costText) costEl.textContent = costText;
   }
   cardEls.get(SHOVEL).classList.toggle('selected', state.selectedCard === SHOVEL);
 }
@@ -240,6 +262,8 @@ function onPointerDown(e) {
 }
 
 export function tryPlacePlant(id, row, col) {
+  if (state.status !== 'playing') return false;
+
   // 1. Pelle
   if (id === SHOVEL) {
     if (game.removePlant(row, col)) {
@@ -252,7 +276,7 @@ export function tryPlacePlant(id, row, col) {
   // 2. Plante
   const def = game.plantDefs[id];
   if (!def) return false;
-  if ((state.cooldowns[id] ?? 0) > 0 || !canAfford(def.cout)) {
+  if (isUnavailable(id)) {
     shake(id);
     return false;
   }
