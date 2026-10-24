@@ -72,12 +72,15 @@ Définies dans `src/config.js` : 5 lignes × 9 colonnes, cases de 90 × 96 px, c
 
 `state.status` : `menu` → `playing` ⇄ `paused` → `won` | `lost`.
 
-## Découpage en trois rôles
+Avant chaque vague (sauf la première), la partie passe en `choosing` : rien ne bouge tant que le joueur n'a pas choisi une amélioration (`engine/upgrades.js` côté moteur, `ui/upgrades.js` côté écran).
+
+## Découpage en quatre rôles
 
 | Rôle | Périmètre | Fichiers |
 |---|---|---|
-| A — Moteur | boucle, entités, vagues | `src/engine/` |
-| B — Interface | cartes, économie, HUD, menus | `src/ui/`, `index.html`, `style.css` |
-| C — Contenu | stats, niveaux, sprites, sons | `data/`, `assets/`, `src/content/` |
+| A — Moteur | boucle, entités, vagues, améliorations | `src/engine/` |
+| B — Interface | cartes, économie, HUD, menus, écran d'amélioration | `src/ui/`, `index.html`, `style.css` |
+| C — Graphismes et son | sprites, décor, sons, particules | `assets/`, `src/content/` |
+| D — Game design | stats, niveaux, améliorations, textes, doc, pitch | `data/`, `docs/`, `pitch/` |
 
 Les fichiers partagés (`main.js`, `config.js`, `state.js`, `events.js`) sont les contrats entre les rôles : on prévient avant de les modifier. Voir [api.md](api.md).

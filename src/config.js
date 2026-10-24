@@ -1,5 +1,5 @@
 // =============================================================
-//  CONFIG — fichier PARTAGÉ (A, B et C le lisent)
+//  CONFIG — fichier PARTAGÉ (A, B, C et D le lisent)
 //  Toute modification ici doit être annoncée à l'équipe.
 // =============================================================
 

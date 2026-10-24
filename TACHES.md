@@ -39,7 +39,7 @@ Priorités : 🔴 indispensable pour la démo · 🟠 important · 🟢 bonus si
 - [X] 🟠 Avertissement visuel quand un zombie approche de la maison (bord gauche qui clignote en rouge)
 - [X] 🟠 Meilleur score / meilleur temps sauvegardé dans `localStorage` sur l'écran de fin
 - [X] 🟠 Ramassage automatique des bonbons au survol (option dans le menu)
-- [ ] 🟢 Choix du niveau sur l'écran titre (si D en fait plusieurs)
+- [x] 🟢 Choix du niveau sur l'écran titre (si D en fait plusieurs)
 - [ ] 🟢 Écran titre animé (zombies qui passent en fond, sprites fournis par C)
 
 **Tester :** `state.resources = 9999` pour essayer toutes les cartes.
