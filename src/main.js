@@ -13,6 +13,7 @@ import { initCards, resetCards } from './ui/cards.js';
 import { initHud } from './ui/hud.js';
 import { initMenu } from './ui/menu.js';
 import { initUpgradeScreen } from './ui/upgrades.js';
+import { initScreamer } from './ui/screamer.js';
 
 // C — contenu
 import { loadSprites } from './content/assets.js';
@@ -43,6 +44,7 @@ async function boot() {
   initHud(game);
   initUpgradeScreen(game, textes);
   initAudio();
+  initScreamer();
 
   function startGame(level) {
     game.newGame(level);

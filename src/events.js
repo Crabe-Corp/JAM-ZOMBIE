@@ -12,6 +12,7 @@
 //    plantDied         { plant }            (mangée par un zombie)
 //    plantRemoved      { plant }            (retirée à la pelle)
 //    plantUsed         { plant }            (bombe, givre ou piège qui a servi)
+//    bombExploded      { x, y, radius, damage }
 //    zombieSpawned     { zombie }
 //    zombieBite        { zombie, plant }
 //    zombieDied        { zombie }

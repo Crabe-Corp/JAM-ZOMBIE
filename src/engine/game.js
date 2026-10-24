@@ -182,6 +182,7 @@ export class Game {
   triggerExplosion(x, y, radius, damage) {
     for (const z of this.zombiesInRadius(x, y, radius)) z.takeDamage(damage);
     this.explosions.push({ x, y, radius, timer: 0, duration: 0.35, kind: 'feu' });
+    events.emit('bombExploded', { x, y, radius, damage });
   }
 
   // ── Gel (plante gel 🧊) ──────────────────────────────────────
