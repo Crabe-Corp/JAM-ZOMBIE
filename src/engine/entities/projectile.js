@@ -7,13 +7,16 @@ import { events } from '../../events.js';
 import { drawProjectile } from '../../content/assets.js';
 
 export class Projectile {
-  constructor({ x, y, row, damage, speed, color }) {
+  constructor({ x, y, row, damage, speed, color, slowDuration = 0, slowFactor = 0.5 }) {
     this.x = x;
     this.y = y;
     this.row = row;
     this.damage = damage;
     this.speed = speed;
     this.color = color;
+    this.slowDuration = slowDuration;
+    this.slowFactor = slowFactor;
+    this.ignoredZombies = new Set();
     this.dead = false;
   }
 
@@ -25,10 +28,16 @@ export class Projectile {
     }
     const zombie = game.zombieHitBy(this);
     if (zombie) {
+      if (typeof zombie.tryProjectileHit === 'function' && !zombie.tryProjectileHit()) {
+        this.ignoredZombies.add(zombie);
+        return;
+      }
       zombie.takeDamage(this.damage);
+      if (this.slowDuration > 0 && typeof zombie.applySlow === 'function') {
+        zombie.applySlow(this.slowDuration, this.slowFactor);
+      }
       this.dead = true;
       events.emit('projectileHit', { projectile: this, zombie });
-      // TODO(A) : effets spéciaux (ralentir, dégâts de zone...) selon la plante
     }
   }
 
