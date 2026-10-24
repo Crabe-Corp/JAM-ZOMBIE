@@ -1,7 +1,7 @@
 // =============================================================
 //  HUD — rôle B (interface)
 //  Compteur de bonbons, barre de progression des vagues,
-//  bannière d'annonce, bouton pause.
+//  bannière d'annonce, bouton pause et avertissement danger maison.
 // =============================================================
 import { state } from '../state.js';
 import { events } from '../events.js';
@@ -13,6 +13,7 @@ export function initHud(game) {
   const waveFill = document.getElementById('wave-fill');
   const banner = document.getElementById('banner');
   const btnPause = document.getElementById('btn-pause');
+  const stageEl = document.getElementById('stage');
 
   let bannerTimeout = null;
   function showBanner(text, finale = false) {
@@ -50,6 +51,37 @@ export function initHud(game) {
     waveFill.style.width = `${Math.round(game.waves.progress * 100)}%`;
   });
 
-  // TODO(B) : afficher un petit "+25" qui flotte quand on ramasse un bonbon
-  // TODO(B) : indicateur de zombies restants, bouton accélérer (x2)
+  // Avertissement visuel quand un zombie approche de la maison (bord gauche clignotant)
+  game.addLayer((ctx) => {
+    if (state.status !== 'playing') {
+      if (stageEl) stageEl.classList.remove('danger-alert');
+      return;
+    }
+
+    // HOUSE_X est 75. Les zombies vivants avec x < 240 sont proches de la maison
+    const dangerZombies = state.zombies.filter((z) => !z.dead && z.x < 240);
+    const inDanger = dangerZombies.length > 0;
+    if (stageEl) stageEl.classList.toggle('danger-alert', inDanger);
+
+    if (!inDanger) return;
+
+    const minX = Math.min(...dangerZombies.map((z) => z.x));
+    // Plus le zombie est proche de la maison (75), plus le clignotement est rapide et intense
+    const urgency = Math.max(0, Math.min(1, (240 - minX) / 165));
+    const freq = 6 + urgency * 8;
+    const pulse = 0.4 + 0.6 * Math.sin(state.time * freq);
+
+    ctx.save();
+    // Dégradé rouge sur le bord gauche du canvas
+    const grad = ctx.createLinearGradient(0, 0, 140, 0);
+    grad.addColorStop(0, `rgba(224, 69, 74, ${0.5 * pulse})`);
+    grad.addColorStop(1, 'rgba(224, 69, 74, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 140, ctx.canvas.height);
+
+    // Liseré rouge vif sur le bord extrême gauche
+    ctx.fillStyle = `rgba(224, 69, 74, ${0.85 * pulse})`;
+    ctx.fillRect(0, 0, 6, ctx.canvas.height);
+    ctx.restore();
+  });
 }

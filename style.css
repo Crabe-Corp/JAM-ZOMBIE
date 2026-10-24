@@ -115,6 +115,12 @@ body {
   border: 2px solid var(--panel-2);
   border-radius: 12px;
   background: #000;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+#stage.danger-alert {
+  border-color: var(--danger);
+  box-shadow: inset 16px 0 24px -6px rgba(224, 69, 74, 0.75), 0 0 18px rgba(224, 69, 74, 0.35);
 }
 canvas { display: block; width: 100%; height: auto; touch-action: none; }
 
