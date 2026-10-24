@@ -235,9 +235,14 @@ function updateCooldowns(dt) {
 
 function canvasPos(e) {
   const rect = canvas.getBoundingClientRect();
+  // Le canvas est en `object-fit: contain` : l'image peut ne pas remplir toute
+  // la boîte (bandes vides sur les côtés), on retire donc ce décalage.
+  const scale = Math.min(rect.width / canvas.width, rect.height / canvas.height);
+  const offsetX = (rect.width - canvas.width * scale) / 2;
+  const offsetY = (rect.height - canvas.height * scale) / 2;
   return {
-    x: ((e.clientX - rect.left) * canvas.width) / rect.width,
-    y: ((e.clientY - rect.top) * canvas.height) / rect.height,
+    x: (e.clientX - rect.left - offsetX) / scale,
+    y: (e.clientY - rect.top - offsetY) / scale,
   };
 }
 
