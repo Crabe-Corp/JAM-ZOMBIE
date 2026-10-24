@@ -14,6 +14,7 @@ const PICK_RADIUS = 40;   // rayon de clic (px)
 const FALL_SPEED = 70;    // px/s
 
 const candies = [];
+const collectedLabels = [];
 let skyTimer = 0;
 let skyInterval = 9;
 let skyValue = 25;
@@ -28,6 +29,7 @@ export function initEconomy(game) {
 
 export function resetEconomy(level) {
   candies.length = 0;
+  collectedLabels.length = 0;
   skyInterval = level.intervalleCiel ?? 9;
   skyValue = level.valeurBonbonCiel ?? 25;
   skyTimer = 4;
@@ -58,8 +60,8 @@ export function tryCollectAt(x, y) {
     const c = candies[i];
     if (Math.hypot(c.x - x, c.y - y) < PICK_RADIUS) {
       candies.splice(i, 1);
+      collectedLabels.push({ x: c.x, y: c.y, amount: c.amount, age: 0 });
       addResources(c.amount);
-      events.emit('resourceCollected', { amount: c.amount, x: c.x, y: c.y });
       return true;
     }
   }
@@ -107,6 +109,14 @@ function update(dt) {
   for (let i = candies.length - 1; i >= 0; i--) {
     if (candies[i].age > LIFETIME) candies.splice(i, 1);
   }
+
+  for (const label of collectedLabels) {
+    label.age += dt;
+    label.y -= 25 * dt;
+  }
+  for (let i = collectedLabels.length - 1; i >= 0; i--) {
+    if (collectedLabels[i].age > 1.2) collectedLabels.splice(i, 1);
+  }
 }
 
 function draw(ctx) {
@@ -130,6 +140,20 @@ function draw(ctx) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(RESOURCE_EMOJI, 0, 2);
+    ctx.restore();
+  }
+
+  for (const label of collectedLabels) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, 1 - label.age / 1.2);
+    ctx.font = 'bold 20px sans-serif';
+    ctx.fillStyle = '#fff4a3';
+    ctx.strokeStyle = '#542b12';
+    ctx.lineWidth = 4;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.strokeText(`+${label.amount}`, label.x, label.y);
+    ctx.fillText(`+${label.amount}`, label.x, label.y);
     ctx.restore();
   }
 }

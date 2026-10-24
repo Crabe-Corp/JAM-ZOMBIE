@@ -13,7 +13,9 @@ Prérequis : Docker Engine installé et démarré.
 
 Le jeu est alors sur http://localhost:8080.
 
-`start.sh` supprime l'ancien conteneur `citrouilles-vs-zombies`, reconstruit l'image, puis lance le conteneur en arrière-plan (`-p 8080:80`). Reconstruis (relance `start.sh`) après chaque modification, car les fichiers sont copiés dans l'image.
+`start.sh` supprime l'ancien conteneur `citrouilles-vs-zombies`, construit l'image de développement, puis lance le conteneur en arrière-plan (`-p 8080:8080`). Le dossier du projet est monté dans le conteneur et `live-server` recharge automatiquement la page lorsqu'un fichier change : il n'est donc pas nécessaire de reconstruire ou relancer Docker après chaque modification.
+
+Pour une image statique de production, le `Dockerfile` standard reste disponible :
 
 Commandes manuelles équivalentes :
 
@@ -22,7 +24,7 @@ docker build -t citrouilles-vs-zombies .
 docker run -p 8080:80 citrouilles-vs-zombies
 ```
 
-Le `Dockerfile` copie le dossier dans une image `nginx:alpine` (port 80).
+Le `Dockerfile` copie le dossier dans une image `nginx:alpine` (port 80). Le `Dockerfile.dev` utilise `live-server` (port 8080) et le montage du dossier local pour le développement.
 
 ### Sous WSL / Ubuntu
 

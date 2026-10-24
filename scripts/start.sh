@@ -7,7 +7,11 @@ CONTAINER=citrouilles-vs-zombies
 PORT=8080
 
 docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
-docker build -t "$IMAGE" .
-docker run -d --name "$CONTAINER" -p "$PORT":80 "$IMAGE"
+docker build -f Dockerfile.dev -t "$IMAGE" .
+docker run -d --name "$CONTAINER" -p "$PORT":8080 \
+    -e CHOKIDAR_USEPOLLING=true \
+    -v "$(pwd)":/app \
+    "$IMAGE"
 
 echo "Projet lancé : http://localhost:$PORT"
+echo "Les changements de fichiers rechargent automatiquement la page."
