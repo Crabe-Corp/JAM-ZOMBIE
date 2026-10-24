@@ -16,14 +16,14 @@ Priorités : 🔴 indispensable pour la démo · 🟠 important · 🟢 bonus si
 
 ## 👤 A — Moteur et gameplay · `src/engine/`
 
-- [ ] 🔴 Lire `game.js` en entier et lancer une partie pour comprendre la boucle
-- [ ] 🔴 Animation de mort des zombies (fondu ou chute) avant leur suppression — `zombie.js`
-- [ ] 🔴 Petite animation de « tir » sur la citrouille (elle grossit un instant) — `plant.js`
-- [ ] 🟠 Nouveau type de plante **`ralentisseur`** (toile d'araignée 🕸️) : ses projectiles ralentissent le zombie pendant 3 s — `plant.js`, `projectile.js`, `zombie.js` (stats fournies par D)
-- [ ] 🟠 Nouveau type **`explosif`** (citrouille bombe 💣) : explose au bout d'1 s et blesse tous les zombies dans un rayon — `plant.js` (stats fournies par D)
-- [ ] 🟠 Zombie qui saute par-dessus la première plante, ou zombie fantôme qui ne peut être touché qu'une fois sur deux (conçu avec D)
-- [ ] 🟢 Tondeuses/« balais de sorcière » : un par ligne, qui balaie la ligne une seule fois au lieu de perdre
-- [ ] 🟢 Bouton vitesse x2 (multiplier `dt` dans `loop`, B ajoute le bouton dans le HUD)
+- [x] 🔴 Lire `game.js` en entier et lancer une partie pour comprendre la boucle
+- [x] 🔴 Animation de mort des zombies (fondu ou chute) avant leur suppression — `zombie.js`
+- [x] 🔴 Petite animation de « tir » sur la citrouille (elle grossit un instant) — `plant.js`
+- [x] 🟠 Nouveau type de plante **`ralentisseur`** (toile d'araignée 🕸️) : ses projectiles ralentissent le zombie pendant 3 s — `plant.js`, `projectile.js`, `zombie.js` (stats fournies par D)
+- [x] 🟠 Nouveau type **`explosif`** (citrouille bombe 💣) : explose au bout d'1 s et blesse tous les zombies dans un rayon — `plant.js` (stats fournies par D)
+- [x] 🟠 Zombie qui saute par-dessus la première plante, ou zombie fantôme qui ne peut être touché qu'une fois sur deux (conçu avec D)
+- [x] 🟢 Tondeuses/« balais de sorcière » : un par ligne, qui balaie la ligne une seule fois au lieu de perdre
+- [x] 🟢 Bouton vitesse x2 (multiplier `dt` dans `loop`, B ajoute le bouton dans le HUD)
 
 **Tester :** `game.spawnZombie('goule', 0)` dans la console.
 
