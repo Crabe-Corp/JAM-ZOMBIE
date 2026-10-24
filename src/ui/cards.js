@@ -41,7 +41,8 @@ export function initCards(g, cv, plants) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
     const { x, y } = canvasPos(e);
-        hoverCell = pixelToCell(x, y);
+    if (state.autoCollect) tryCollectAt(x, y);
+    hoverCell = pixelToCell(x, y);
   });
   canvas.addEventListener('dragleave', () => {
     hoverCell = null;
@@ -157,7 +158,8 @@ function onWindowPointerMove(e) {
   }
   if (isDragging) {
     const { x, y } = canvasPos(e);
-        hoverCell = pixelToCell(x, y);
+    if (state.autoCollect) tryCollectAt(x, y);
+    hoverCell = pixelToCell(x, y);
   }
 }
 
@@ -219,7 +221,8 @@ function canvasPos(e) {
 
 function onPointerMove(e) {
   const { x, y } = canvasPos(e);
-    hoverCell = pixelToCell(x, y);
+  if (state.autoCollect) tryCollectAt(x, y);
+  hoverCell = pixelToCell(x, y);
 }
 
 function onPointerDown(e) {

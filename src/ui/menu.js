@@ -1,12 +1,13 @@
 // =============================================================
 //  MENUS — rôle B (interface)
-//  Écran titre, pause, victoire / défaite et meilleur score
-//  (localStorage).
+//  Écran titre, pause, victoire / défaite, meilleur score
+//  (localStorage) et option de ramassage auto au survol.
 // =============================================================
 import { state } from '../state.js';
 import { events } from '../events.js';
 
 const SCORES_KEY = 'citrouilles_vs_zombies_scores';
+const AUTOCOLLECT_KEY = 'zombies_autocollect';
 
 function getScores() {
   try {
@@ -34,6 +35,30 @@ export function initMenu(game, { onStart }) {
     }
   };
 
+  // ── Option : Ramassage automatique des bonbons au survol ────
+  const savedAutoCollect = localStorage.getItem(AUTOCOLLECT_KEY) === 'true';
+  state.autoCollect = savedAutoCollect;
+
+  const titleCheck = document.getElementById('opt-autocollect-title');
+  const pauseCheck = document.getElementById('opt-autocollect-pause');
+
+  const updateAutoCollect = (val) => {
+    state.autoCollect = val;
+    localStorage.setItem(AUTOCOLLECT_KEY, val ? 'true' : 'false');
+    if (titleCheck) titleCheck.checked = val;
+    if (pauseCheck) pauseCheck.checked = val;
+  };
+
+  if (titleCheck) {
+    titleCheck.checked = savedAutoCollect;
+    titleCheck.addEventListener('change', (e) => updateAutoCollect(e.target.checked));
+  }
+  if (pauseCheck) {
+    pauseCheck.checked = savedAutoCollect;
+    pauseCheck.addEventListener('change', (e) => updateAutoCollect(e.target.checked));
+  }
+
+  // ── Boutons de navigation ──────────────────────────────────
   document.getElementById('btn-play').addEventListener('click', () => { show(null); onStart(); });
   document.getElementById('btn-restart').addEventListener('click', () => { show(null); onStart(); });
   document.getElementById('btn-resume').addEventListener('click', () => game.togglePause());

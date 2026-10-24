@@ -4,7 +4,7 @@
 //  Tout le monde peut LIRE n'importe quel champ.
 //  Pour ÉCRIRE, chacun ne touche qu'à ses champs :
 //    A (moteur)    → status, plants, zombies, projectiles, wave, totalWaves, time
-//    B (interface) → resources, selectedCard, cooldowns
+//    B (interface) → resources, selectedCard, cooldowns, autoCollect
 //
 //  Astuce debug : tapez `state` dans la console du navigateur.
 // =============================================================
@@ -21,6 +21,7 @@ function freshState() {
     time: 0,             // secondes écoulées depuis le début de la partie
     selectedCard: null,  // id de la plante sélectionnée, 'pelle', ou null
     cooldowns: {},       // { [plantId]: secondes restantes avant de pouvoir reposer }
+    autoCollect: false,  // ramassage automatique des bonbons au survol
   };
 }
 
@@ -28,5 +29,6 @@ export const state = freshState();
 
 /** Remet l'état à zéro (nouvelle partie). */
 export function resetState(overrides = {}) {
-  Object.assign(state, freshState(), overrides);
+  const currentAutoCollect = state.autoCollect;
+  Object.assign(state, freshState(), { autoCollect: currentAutoCollect }, overrides);
 }

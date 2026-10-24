@@ -122,6 +122,7 @@ body {
   border-color: var(--danger);
   box-shadow: inset 16px 0 24px -6px rgba(224, 69, 74, 0.75), 0 0 18px rgba(224, 69, 74, 0.35);
 }
+
 canvas { display: block; width: 100%; height: auto; touch-action: none; }
 
 #banner {
@@ -193,6 +194,31 @@ button.ghost {
 }
 
 /* ── Options de menu & Scores ────────────────────────────── */
+.menu-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--panel-2);
+  transition: color 0.15s, border-color 0.15s;
+}
+.menu-option:hover {
+  color: var(--text);
+  border-color: var(--orange);
+}
+.menu-option input[type="checkbox"] {
+  accent-color: var(--orange);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
 .best-score {
   font-size: 0.95rem;
   font-weight: 600;
