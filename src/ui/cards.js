@@ -92,7 +92,7 @@ function buildBar() {
     el.draggable = true;
     el.title = `${def.nom} (${i + 1})\n${def.description ?? ''}`;
     el.innerHTML = `
-      <span class="card-icon">${def.icone ? `<img src="${def.icone}" alt="">` : def.emoji}</span>
+      <span class="card-icon">${def.icone || def.sprite ? `<img src="${def.icone || def.sprite}" alt="">` : def.emoji}</span>
       <span class="card-cost">🍬 ${def.cout}</span>
       <span class="card-cooldown"></span>`;
 

@@ -18,6 +18,7 @@ import { initScreamer } from './ui/screamer.js';
 // C — contenu
 import { loadSprites } from './content/assets.js';
 import { initAudio } from './content/audio.js';
+import { initParticles } from './content/particles.js';
 
 async function loadJSON(path) {
   const res = await fetch(path);
@@ -44,6 +45,7 @@ async function boot() {
   initHud(game);
   initUpgradeScreen(game, textes);
   initAudio();
+  initParticles(game);
   initScreamer();
 
   function startGame(level) {
