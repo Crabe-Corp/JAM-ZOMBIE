@@ -48,12 +48,12 @@ Priorités : 🔴 indispensable pour la démo · 🟠 important · 🟢 bonus si
 
 ## 👤 C — Graphismes, son et ambiance · `assets/`, `src/content/`
 
-- [ ] 🔴 Choisir le **nom du jeu** (avec D) et la palette de couleurs (à donner à B pour `style.css`)
-- [ ] 🔴 Dessiner ou trouver les sprites des 3 plantes et 4 zombies (PNG transparent ~256 px), puis donner les chemins `"sprite": "assets/sprites/…"` à D pour les JSON
-- [ ] 🔴 Image de fond du terrain (1000 × 520 px) — voir le `TODO(C)` dans `content/assets.js`
-- [ ] 🟠 Vrais bruitages + une musique d'ambiance — remplir `FICHIERS` dans `content/audio.js`
-- [ ] 🟠 Particules simples (étincelles à l'impact, poussière à la mort) — nouveau fichier `src/content/particles.js`, branché sur les événements `projectileHit` / `zombieDied` et dessiné via `game.addLayer`
-- [ ] 🟠 Sprites des nouvelles plantes (🕸️, 💣) et du nouveau zombie
+- [x] 🔴 Choisir le **nom du jeu** (avec D) et la palette de couleurs (à donner à B pour `style.css`)
+- [x] 🔴 Dessiner ou trouver les sprites des 3 plantes et 4 zombies (PNG transparent ~256 px), puis donner les chemins `"sprite": "assets/sprites/…"` à D pour les JSON
+- [x] 🔴 Image de fond du terrain (1000 × 520 px) — voir le `TODO(C)` dans `content/assets.js`
+- [x] 🟠 Vrais bruitages + une musique d'ambiance — remplir `FICHIERS` dans `content/audio.js`
+- [x] 🟠 Particules simples (étincelles à l'impact, poussière à la mort) — nouveau fichier `src/content/particles.js`, branché sur les événements `projectileHit` / `zombieDied` et dessiné via `game.addLayer`
+- [x] 🟠 Sprites des nouvelles plantes (🕸️, 💣) et du nouveau zombie
 - [ ] 🟢 Visuels du pitch (logo, captures, fond des slides) pour D
 - [ ] 🟢 Décor du 2e niveau (« Le manoir »)
 
