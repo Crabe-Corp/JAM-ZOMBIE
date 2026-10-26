@@ -11,16 +11,17 @@
 import { events } from '../events.js';
 
 const FICHIERS = {
-  tir: null,        // ex. 'assets/audio/tir.mp3'
-  morsure: null,
-  mort: null,
-  pose: null,
-  bonbon: null,
-  vague: null,
-  finale: null,
-  victoire: null,
-  defaite: null,
-  musique: null,    // musique d'ambiance en boucle
+  tir: 'assets/audio/tir.mp3',
+  morsure: 'assets/audio/morsure.mp3',
+  mort: 'assets/audio/mort.mp3',
+  pose: 'assets/audio/pose.mp3',
+  bonbon: 'assets/audio/bonbon.mp3',
+  explosion: 'assets/audio/explosion.mp3',
+  vague: 'assets/audio/vague.mp3',
+  finale: 'assets/audio/finale.mp3',
+  victoire: 'assets/audio/victoire.mp3',
+  defaite: 'assets/audio/defaite.mp3',
+  musique: 'assets/audio/musique.mp3',    // musique d'ambiance en boucle
 };
 
 // Bips de remplacement : fréquence de départ → d'arrivée (Hz), durée (s), forme, volume
@@ -30,6 +31,7 @@ const SYNTH = {
   mort:     { f: [280, 50], d: 0.45, t: 'sawtooth', v: 0.06 },
   pose:     { f: [220, 440], d: 0.1, t: 'triangle', v: 0.08 },
   bonbon:   { f: [740, 1300], d: 0.12, t: 'sine', v: 0.08 },
+  explosion: { f: [200, 40], d: 0.6, t: 'sawtooth', v: 0.1 },
   vague:    { f: [120, 70], d: 0.9, t: 'sawtooth', v: 0.06 },
   finale:   { f: [90, 35], d: 1.6, t: 'sawtooth', v: 0.09 },
   victoire: { f: [420, 950], d: 0.8, t: 'triangle', v: 0.1 },
@@ -116,6 +118,9 @@ export function initAudio() {
   events.on('zombieDied', () => play('mort'));
   events.on('plantPlaced', () => play('pose'));
   events.on('resourceCollected', () => play('bonbon'));
+  events.on('plantUsed', ({ plant }) => {
+    if (plant.def.type === 'explosif') play('explosion');
+  });
   events.on('waveStart', ({ finale }) => play(finale ? 'finale' : 'vague'));
   events.on('pauseChanged', ({ paused }) => (paused ? stopMusic() : startMusic()));
   events.on('gameOver', ({ win }) => {

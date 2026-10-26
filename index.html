@@ -18,6 +18,7 @@
         <div id="wave-label">Vague 0/0</div>
         <div id="wave-bar"><div id="wave-fill"></div></div>
       </div>
+      <button id="btn-speed" class="icon-btn" title="Vitesse x2 (V)">x1</button>
       <button id="btn-pause" class="icon-btn" title="Pause (P)">⏸</button>
     </header>
 
@@ -27,26 +28,68 @@
 
       <section class="screen" id="screen-title">
         <h1>Citrouilles vs Zombies</h1>
-        <p>Les morts sortent du cimetière. Plante tes citrouilles et protège la maison jusqu'à l'aube.</p>
+        <p id="level-intro">Les morts sortent du cimetière. Plante tes citrouilles et protège la maison jusqu'à l'aube.</p>
+        <div id="level-select"></div>
         <button id="btn-play" class="big">Jouer</button>
+        <label class="menu-option">
+          <input type="checkbox" id="opt-autocollect-title">
+          <span>Ramasser les bonbons au survol</span>
+        </label>
       </section>
 
       <section class="screen hidden" id="screen-pause">
         <h2>Pause</h2>
+        <p id="pause-tip"></p>
         <button id="btn-resume" class="big">Reprendre</button>
+        <label class="menu-option">
+          <input type="checkbox" id="opt-autocollect-pause">
+          <span>Ramasser les bonbons au survol</span>
+        </label>
         <button id="btn-quit" class="ghost">Retour au menu</button>
       </section>
 
       <section class="screen hidden" id="screen-end">
         <h2 id="end-title"></h2>
         <p id="end-text"></p>
+        <p id="end-best" class="best-score"></p>
         <button id="btn-restart" class="big">Rejouer</button>
+        <button id="btn-menu" class="ghost">Changer de niveau</button>
+      </section>
+
+      <section class="screen hidden" id="screen-upgrade">
+        <h2 id="upgrade-title">Choisis une amélioration</h2>
+        <p id="upgrade-subtitle"></p>
+        <div id="upgrade-choices"></div>
       </section>
     </main>
 
-    <footer>
-      Clique une carte puis une case · ramasse les 🍬 · <kbd>1</kbd>–<kbd>3</kbd> cartes ·
-      <kbd>S</kbd> pelle · <kbd>Échap</kbd> annuler · <kbd>P</kbd> pause · <kbd>M</kbd> son
+    <footer class="howto">
+      <h2>Comment jouer ?</h2>
+      <div class="howto-wrapper">
+        <div class="howto-card">
+          <div class="howto-header">Posez vos troupes !</div>
+          <div class="howto-body">🕯️ Plantez des bougies pour générer des bonbons.</div>
+          <div class="howto-body">🎃 Plantez des citrouilles pour tirer sur les zombies.</div>
+          <div class="howto-body">🪦 Plantez des pierres tombales pour les protéger.</div>
+        </div>
+
+        <div class="howto-card">
+          <div class="howto-header">Comment jouer ?</div>
+          <div class="howto-body">Cliquez sur une carte (ou glissez-la) puis sur une case vide pour la poser.</div>
+          <div class="howto-body">Les zombies apparaîtront progressivement depuis la droite du terrain.</div>
+          <div class="howto-body">Entre deux vagues, choisissez une amélioration pour vos plantes.</div>
+        </div>
+
+        <div class="howto-card">
+          <div class="howto-header">Comment gagner ?</div>
+          <div class="howto-body">Protégez votre maison : si un zombie l'atteint, c'est perdu.</div>
+          <div class="howto-body">Une fois toutes les vagues terminées, vous avez gagné la partie.</div>
+        </div>
+      </div>
+      <p class="controls">
+        <kbd>1</kbd>–<kbd>8</kbd> cartes · <kbd>S</kbd> pelle · <kbd>Échap</kbd> annuler ·
+        <kbd>P</kbd> pause · <kbd>V</kbd> vitesse x2 · <kbd>M</kbd> son
+      </p>
     </footer>
   </div>
 

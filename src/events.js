@@ -1,6 +1,6 @@
 // =============================================================
 //  BUS D'ÉVÉNEMENTS — fichier PARTAGÉ (point de contact n°3)
-//  Ne renommez pas un événement sans prévenir les deux autres.
+//  Ne renommez pas un événement sans prévenir les autres rôles.
 //
 //  Utilisation :
 //    events.on('zombieDied', ({ zombie }) => { ... });
@@ -11,14 +11,19 @@
 //    plantPlaced       { plant }
 //    plantDied         { plant }            (mangée par un zombie)
 //    plantRemoved      { plant }            (retirée à la pelle)
+//    plantUsed         { plant }            (bombe, givre ou piège qui a servi)
+//    bombExploded      { x, y, radius, damage }
 //    zombieSpawned     { zombie }
 //    zombieBite        { zombie, plant }
 //    zombieDied        { zombie }
 //    projectileFired   { projectile, plant }
 //    projectileHit     { projectile, zombie }
-//    resourceProduced  { x, y, amount }     (une plante "producteur" a produit)
+//    resourceProduced  { x, y, amount, golden }  (une plante "producteur" a produit)
 //    waveStart         { index, total, finale }
+//    upgradeOffer      { choices, wave }    (la partie attend un choix d'amélioration)
+//    upgradeChosen     { upgrade, level }
 //    pauseChanged      { paused }
+//    speedChanged      { speed }            (1 ou 2)
 //    gameOver          { win }
 //
 //  ── Émis par l'INTERFACE (B) ─────────────────────────────────

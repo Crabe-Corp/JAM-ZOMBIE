@@ -39,6 +39,67 @@
           ]
         }
       ]
+    },
+    {
+      "id": "manoir",
+      "nom": "Le manoir hanté",
+      "ressourcesDepart": 125,
+      "intervalleCiel": 10,
+      "valeurBonbonCiel": 25,
+      "vagues": [
+        {
+          "temps": 20,
+          "zombies": [
+            { "type": "basique", "nombre": 4, "intervalle": 7 }
+          ]
+        },
+        {
+          "temps": 50,
+          "zombies": [
+            { "type": "basique", "nombre": 5, "intervalle": 5 },
+            { "type": "chauve-souris", "nombre": 3, "intervalle": 6, "decalage": 4 }
+          ]
+        },
+        {
+          "temps": 85,
+          "zombies": [
+            { "type": "loup-garou", "nombre": 3, "intervalle": 7 },
+            { "type": "basique", "nombre": 5, "intervalle": 4, "decalage": 2 },
+            { "type": "goule", "nombre": 1, "decalage": 12 }
+          ]
+        },
+        {
+          "temps": 125,
+          "zombies": [
+            { "type": "goule", "nombre": 3, "intervalle": 6 },
+            { "type": "chauve-souris", "nombre": 5, "intervalle": 3, "decalage": 5 },
+            { "type": "loup-garou", "nombre": 3, "intervalle": 5, "decalage": 10 },
+            { "type": "fantome", "nombre": 2, "intervalle": 6, "decalage": 14 }
+          ]
+        },
+        {
+          "temps": 170,
+          "zombies": [
+            { "type": "basique", "nombre": 8, "intervalle": 2.5 },
+            { "type": "loup-garou", "nombre": 4, "intervalle": 4, "decalage": 6 },
+            { "type": "goule", "nombre": 3, "intervalle": 5, "decalage": 10 },
+            { "type": "dracula", "nombre": 1, "decalage": 20, "ligne": 0 }
+          ]
+        },
+        {
+          "temps": 225,
+          "finale": true,
+          "zombies": [
+            { "type": "basique", "nombre": 10, "intervalle": 1.5 },
+            { "type": "chauve-souris", "nombre": 6, "intervalle": 2, "decalage": 3 },
+            { "type": "loup-garou", "nombre": 5, "intervalle": 3, "decalage": 6 },
+            { "type": "goule", "nombre": 4, "intervalle": 4, "decalage": 8 },
+            { "type": "fantome", "nombre": 3, "intervalle": 3, "decalage": 10 },
+            { "type": "dracula", "nombre": 1, "decalage": 14, "ligne": 1 },
+            { "type": "dracula", "nombre": 1, "decalage": 18, "ligne": 3 }
+          ]
+        }
+      ]
     }
   ]
 }
